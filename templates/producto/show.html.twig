@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Producto{% endblock %}
+
+{% block body %}
+    <h1>Producto</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ producto.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ producto.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Precio</th>
+                <td>{{ producto.precio }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ producto.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Cantidad</th>
+                <td>{{ producto.cantidad }}</td>
+            </tr>
+            <tr>
+                <th>Categoria</th>
+                <td>{{ producto.categoria }}</td>
+            </tr>
+            <tr>
+                <th>Imagen</th>
+                {% if producto.imagen %}
+		        <td><img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="mini-imagen"/></td>
+                {% else %}
+                <td><img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" class="mini-imagen"/></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th>Destacado</th>
+                <td>{{ producto.destacado ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Oferta</th>
+                <td>{{ producto.oferta ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Novedad</th>
+                <td>{{ producto.novedad ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="{{ path('app_producto_index') }}">Volver a la lista</a>
+
+    <a class="btn btn-primary" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>
+
+    {# {{ include('producto/_delete_form.html.twig') }} #}
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    <script>
+        window.addEventListener("load",function(){
+            var login = document.getElementById("registerModal");
+            login.style.display = "block";
+
+        });
+        function cerrarVentana(){
+           document.getElementById("registerModal").style.display = "none";
+        }
+    </script>
+{% endblock %}
+
+{% block title %}Registro{% endblock %}
+
+{% block body %}
+<div class="modal" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header border-bottom-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=cerrarVentana()>
+          <span aria-hidden="true">Cerrar</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-title text-center">
+          <h4>Registro de nuevo usuario</h4>
+        </div>
+
+        <div class="container contenedor">
+            <div class="row">
+                <div class="col-xs-12">
+	              {{ form_start(registrationForm) }}
+                    {{ form_widget(registrationForm) }}
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                  {{ form_end(registrationForm) }}
+                  <a class="btn btn-primary" href="#" onclick="consultarCondiciones()">Lee nuestras condiciones</a>
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

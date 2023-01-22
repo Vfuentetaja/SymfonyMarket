@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email de renovacion de tu password {% endblock %}
+
+{% block body %}
+    <p>
+        Si tu correo electronico es correcto, entonces te acabamos de enviar un mail con un enlace que puedes usar para renovar tu password.
+        Este enlace expirara en {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p>Si no recibes un correo, por favor revisa tu buzon de span  o <a href="{{ path('app_forgot_password_request') }}">intentalo de nuevo</a>.</p>
+{% endblock %}
