@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pedido index{% endblock %}
+
+{% block body %}
+    <h1>Pedido index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha_pedido</th>
+                <th>Id_usuario</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.fechaPedido ? pedido.fechaPedido|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pedido.idUsuario }}</td>
+                <td>
+                    <a href="{{ path('app_pedido_show', {'id': pedido.id}) }}">show</a>
+                    <a href="{{ path('app_pedido_edit', {'id': pedido.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_pedido_new') }}">Create new</a>
+{% endblock %}
