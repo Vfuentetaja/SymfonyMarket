@@ -9,6 +9,7 @@ use App\Form\PedidoType;
 use App\Repository\PedidoRepository;
 use App\Repository\ItemRepository;
 use App\Repository\ProductoRepository;
+use App\Service\PedidoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,9 +37,8 @@ class PedidoController extends AbstractController
 
 
     #[Route('/new', name: 'app_pedido_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PedidoRepository $pedidoRepository,ItemRepository $itemRepository, ProductoRepository $productoRepository): Response
+    public function new(Request $request, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
     {
-        //$textoRecibido=[{name:'Bandera de Zoro',price:45.9,quantity:2},{name:'Bandera de Luffy',price:18.4,quantity:1}];
         $pedido = new Pedido();
         $pedido->setFechaPedido(new \DateTime());
         $pedido->setIdUsuario($this->getUser()->getId());
@@ -46,7 +46,7 @@ class PedidoController extends AbstractController
         $pedido->setDireccionDestinatario($this->getUser()->getDireccion());
 
         $producto1= $productoRepository->findOneByNombre('Bandera de Namy');
-        $producto2= $productoRepository->findOneByNombre('Capa de Luffy');
+        $producto2= $productoRepository->findOneByNombre('Barco de Luffy');
 
         $item1= new Item();
         $item1->setProducto($producto1);
@@ -55,59 +55,31 @@ class PedidoController extends AbstractController
 
         $item2= new Item();
         $item2->setProducto($producto2);
-        $item2->setCantidad(1);
+        $item2->setCantidad(2);
         $item2->setPedido($pedido);
 
         $pedido->addItem($item1);
         $pedido->addItem($item2);
 
-        //$itemRepository->save($item1, true);
-        //$itemRepository->save($item2, true);
         $pedidoRepository->save($pedido, true);
 
         return $this->redirectToRoute('app_pedido_show', ['id'=>$pedido->getId()], Response::HTTP_SEE_OTHER);
-
-/*         $form = $this->createForm(PedidoType::class, $pedido);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $pedidoRepository->save($pedido, true);
-
-            return $this->redirectToRoute('app_pedido_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('pedido/new.html.twig', [
-            'pedido' => $pedido,
-            'form' => $form,
-        ]); */
     }
 
     #[Route('/{id}/show', name: 'app_pedido_show', methods: ['GET'], requirements:['id'=>'\d+'])]
-    public function show(PedidoRepository $pedidoRepository,ItemRepository $itemRepository, int $id): Response
+    public function show(Pedido $pedido,PedidoService $pedidoService): Response
     {
-        $pedido=$pedidoRepository->findOneById($id);
+        $total=$pedidoService->calcularTotal($pedido);
         return $this->render('pedido/show.html.twig', [
-            'pedido' => $pedido,
+            'pedido' => $pedido,'total'=>$total,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_pedido_edit', methods: ['GET', 'POST'], requirements:['id'=>'\d+'])]
-    public function edit(Request $request, Pedido $pedido, PedidoRepository $pedidoRepository,ItemRepository $itemRepository): Response
+    public function edit(Request $request, Pedido $pedido, PedidoRepository $pedidoRepository): Response
     {
         $form = $this->createForm(PedidoType::class, $pedido);
         $form->handleRequest($request); 
-
-        $productos=[];
-        $pedido1=$pedidoRepository->findOneById($pedido->getId());
-        $items=$itemRepository->findByPedido($pedido1);
-        /* foreach ($items as $item){
-            $producto=$item->getProducto();
-            array_push($productos,$producto);
-        }
-        return $this->render('pedido/show.html.twig', [
-            'pedido' => $pedido,'productos'=>$productos,
-        ]); */
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $pedidoRepository->save($pedido, true);
@@ -116,8 +88,6 @@ class PedidoController extends AbstractController
             }else{
                 return $this->redirectToRoute('app_pedido_index', ['id'=>$pedido->getIdUsuario()], Response::HTTP_SEE_OTHER);
             } 
-            
-            //return $this->redirectToRoute('app_pedido_index', ['id'=>$pedido->getIdUsuario()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('pedido/edit.html.twig', [
@@ -127,7 +97,7 @@ class PedidoController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_pedido_delete', methods: ['POST'], requirements:['id'=>'\d+'])]
-    public function delete(Request $request, Pedido $pedido,ItemRepository $itemRepository, PedidoRepository $pedidoRepository): Response
+    public function delete(Request $request, Pedido $pedido, PedidoRepository $pedidoRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$pedido->getId(), $request->request->get('_token'))) {
 
@@ -146,18 +116,23 @@ class PedidoController extends AbstractController
     }
 
     #[Route('/{id}/{id_item}', name: 'app_item_delete', methods: ['POST'], requirements:['id'=>'\d+'])]
-    public function deleteItem(Request $request, Pedido $pedido,int $id_item,PedidoRepository $pedidoRepository,ItemRepository $itemRepository): Response
+    public function deleteItem(Request $request, Pedido $pedido,int $id_item,ItemRepository $itemRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$pedido->getId(), $request->request->get('_token'))) {
 
-            $pedido=$pedidoRepository->findOneById($pedido->getId());
+            
             $item=$itemRepository->findOneById($id_item);
-            //$pedido->removeItem($item);
             $itemRepository->remove($item,true);
         } 
 
         return $this->redirectToRoute('app_pedido_show', ['id'=>$pedido->getId()], Response::HTTP_SEE_OTHER);
 
         
+    }
+
+    #[Route('/pago', name: 'app_pedido_pago', methods: ['GET'])]
+    public function formPagar(): Response
+    {
+        return $this->render('pedido/pago.html.twig', []); 
     }
 }

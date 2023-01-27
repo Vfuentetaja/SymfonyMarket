@@ -41,6 +41,13 @@ class ProductoRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('p')
+              ->orderBy('p.id', 'DESC')
+              ->getQuery()
+              ->getResult();
+    }
 
     public function searchText($searchText): array
     {
@@ -48,7 +55,7 @@ class ProductoRepository extends ServiceEntityRepository
              ->where('p.nombre LIKE :name')
               //->andWhere('p.descripcion LIKE :val OR p.nombre LIKE :val')
               ->setParameter('name', '%'.$searchText.'%')
-              //->orderBy('p.id', 'ASC')
+              ->orderBy('p.id', 'DESC')
               //->setMaxResults(10)
               ->getQuery()
               ->getResult();
@@ -68,6 +75,7 @@ class ProductoRepository extends ServiceEntityRepository
         $query=$this->createQueryBuilder('p')
             ->where('p.categoria = :name')
             ->setParameter('name','Regalos')
+            ->orderBy('p.id', 'DESC')
             ->getQuery(); 
         return $this->paginacion($query,$pagina,$elementosPorPagina); //utilizamos la query que nos recupera todos los registros 
                         //para pasarsela a la funcion "paginacion" de arriba y devolver el resutlado de esa funcion "paginacion"
@@ -78,6 +86,7 @@ class ProductoRepository extends ServiceEntityRepository
         $query=$this->createQueryBuilder('p')
             ->where('p.categoria = :name')
             ->setParameter('name','Ropa')
+            ->orderBy('p.id', 'DESC')
             ->getQuery(); 
         return $this->paginacion($query,$pagina,$elementosPorPagina); //utilizamos la query que nos recupera todos los registros 
                         //para pasarsela a la funcion "paginacion" de arriba y devolver el resutlado de esa funcion "paginacion"
@@ -88,6 +97,7 @@ class ProductoRepository extends ServiceEntityRepository
         $query=$this->createQueryBuilder('p')
             ->where('p.categoria = :name')
             ->setParameter('name','Decoracion')
+            ->orderBy('p.id', 'DESC')
             ->getQuery(); 
         return $this->paginacion($query,$pagina,$elementosPorPagina); //utilizamos la query que nos recupera todos los registros 
                         //para pasarsela a la funcion "paginacion" de arriba y devolver el resutlado de esa funcion "paginacion"
@@ -98,6 +108,7 @@ class ProductoRepository extends ServiceEntityRepository
         $query=$this->createQueryBuilder('p')
             ->where('p.categoria = :name')
             ->setParameter('name','Figuras')
+            ->orderBy('p.id', 'DESC')
             ->getQuery(); 
         return $this->paginacion($query,$pagina,$elementosPorPagina); //utilizamos la query que nos recupera todos los registros 
                         //para pasarsela a la funcion "paginacion" de arriba y devolver el resutlado de esa funcion "paginacion"

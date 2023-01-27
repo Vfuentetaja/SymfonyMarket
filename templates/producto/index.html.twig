@@ -129,8 +129,8 @@
                     </div>
                     <div class="contenido_stories_descripcion">
                         <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
-                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
-                        <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p></div>
+                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p><img class="mini-imagen" src="{{ asset('images/descuento.png') }}" alt="logo descuento"/></div>
+                        <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p><p>Rebajado un {{ producto.descuento }}%</p></div>
                     </div>
                 </div>
             {% if loop.last or loop.index % productosPorSlider == 0 %}

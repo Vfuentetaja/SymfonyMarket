@@ -261,6 +261,14 @@ img {vertical-align: middle;}
 }
 /*CODIGO DE LOS FORMULARIOS*/
 
+/*CODIGO DEL FORMULARIO DE PAGO*/
+.credit-card-div  { margin-top:20px; margin-bottom:20px; }
+.credit-card-div  span { padding-top:10px; }
+.credit-card-div img { padding-top:30px; }
+.credit-card-div .small-font { font-size:9px; }
+.credit-card-div .pad-adjust { padding-top:10px; }
+/*CODIGO DEL FORMULARIO DE PAGO*/
+
 
 
 /*CODIGO DE LA BARRA DE BUSQUEDA DEL HEADER*/
@@ -278,3 +286,10 @@ footer{
     margin-top:5%;
 }
 /*CODIGO DEL FOOTER*/
+
+/*CODIGO DEL FORMULARIO DE PAGO*/
+.credit-card-div  span { padding-top:10px; }
+.credit-card-div img { padding-top:30px; }
+.credit-card-div .small-font { font-size:9px; }
+.credit-card-div .pad-adjust { padding-top:10px; }
+/*CODIGO DEL FORMULARIO DE PAGO*/
