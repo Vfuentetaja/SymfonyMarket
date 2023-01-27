@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Pedido;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,15 +14,17 @@ class Item
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'items')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Producto::class, inversedBy: 'items')]
+    #[ORM\JoinColumn(name: 'producto_id', referencedColumnName: 'id', nullable: false)]
     private ?Producto $producto = null;
 
     #[ORM\Column]
     private ?int $cantidad = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Items')]
+    #[ORM\ManyToOne(targetEntity: Pedido::class, inversedBy: 'items')]
+    #[ORM\JoinColumn(name: 'pedido_id', referencedColumnName: 'id', nullable: false)]
     private ?Pedido $pedido = null;
+
 
     public function getId(): ?int
     {
@@ -63,4 +66,6 @@ class Item
 
         return $this;
     }
+
+
 }

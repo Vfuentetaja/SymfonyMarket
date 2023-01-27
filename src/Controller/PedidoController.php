@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Pedido;
+use App\Entity\Item;
+use App\Entity\Producto;
 use App\Form\PedidoType;
 use App\Repository\PedidoRepository;
+use App\Repository\ItemRepository;
+use App\Repository\ProductoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,19 +17,57 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/pedido')]
 class PedidoController extends AbstractController
 {
-    #[Route('/', name: 'app_pedido_index', methods: ['GET'])]
-    public function index(PedidoRepository $pedidoRepository): Response
+    #[Route('/', name: 'app_pedido_index_all', methods: ['GET'])]
+    public function indexAll(PedidoRepository $pedidoRepository): Response
+    {
+         return $this->render('pedido/index.html.twig', [
+            'pedidos' => $pedidoRepository->findAll(),
+        ]); 
+    }
+
+    #[Route('/{id}', name: 'app_pedido_index', methods: ['GET'], requirements:['id'=>'\d+'])]
+    public function index(int $id,PedidoRepository $pedidoRepository): Response
     {
         return $this->render('pedido/index.html.twig', [
-            'pedidos' => $pedidoRepository->findAll(),
+            'pedidos' => $pedidoRepository->findAllByUser($id),
         ]);
     }
 
+
+
     #[Route('/new', name: 'app_pedido_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PedidoRepository $pedidoRepository): Response
+    public function new(Request $request, PedidoRepository $pedidoRepository,ItemRepository $itemRepository, ProductoRepository $productoRepository): Response
     {
+        //$textoRecibido=[{name:'Bandera de Zoro',price:45.9,quantity:2},{name:'Bandera de Luffy',price:18.4,quantity:1}];
         $pedido = new Pedido();
-        $form = $this->createForm(PedidoType::class, $pedido);
+        $pedido->setFechaPedido(new \DateTime());
+        $pedido->setIdUsuario($this->getUser()->getId());
+        $pedido->setDestinatario($this->getUser()->getNombre());
+        $pedido->setDireccionDestinatario($this->getUser()->getDireccion());
+
+        $producto1= $productoRepository->findOneByNombre('Bandera de Namy');
+        $producto2= $productoRepository->findOneByNombre('Capa de Luffy');
+
+        $item1= new Item();
+        $item1->setProducto($producto1);
+        $item1->setCantidad(3);
+        $item1->setPedido($pedido);
+
+        $item2= new Item();
+        $item2->setProducto($producto2);
+        $item2->setCantidad(1);
+        $item2->setPedido($pedido);
+
+        $pedido->addItem($item1);
+        $pedido->addItem($item2);
+
+        //$itemRepository->save($item1, true);
+        //$itemRepository->save($item2, true);
+        $pedidoRepository->save($pedido, true);
+
+        return $this->redirectToRoute('app_pedido_show', ['id'=>$pedido->getId()], Response::HTTP_SEE_OTHER);
+
+/*         $form = $this->createForm(PedidoType::class, $pedido);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -37,27 +79,45 @@ class PedidoController extends AbstractController
         return $this->renderForm('pedido/new.html.twig', [
             'pedido' => $pedido,
             'form' => $form,
-        ]);
+        ]); */
     }
 
-    #[Route('/{id}', name: 'app_pedido_show', methods: ['GET'])]
-    public function show(Pedido $pedido): Response
+    #[Route('/{id}/show', name: 'app_pedido_show', methods: ['GET'], requirements:['id'=>'\d+'])]
+    public function show(PedidoRepository $pedidoRepository,ItemRepository $itemRepository, int $id): Response
     {
+        $pedido=$pedidoRepository->findOneById($id);
         return $this->render('pedido/show.html.twig', [
             'pedido' => $pedido,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_pedido_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Pedido $pedido, PedidoRepository $pedidoRepository): Response
+    #[Route('/{id}/edit', name: 'app_pedido_edit', methods: ['GET', 'POST'], requirements:['id'=>'\d+'])]
+    public function edit(Request $request, Pedido $pedido, PedidoRepository $pedidoRepository,ItemRepository $itemRepository): Response
     {
         $form = $this->createForm(PedidoType::class, $pedido);
-        $form->handleRequest($request);
+        $form->handleRequest($request); 
+
+        $productos=[];
+        $pedido1=$pedidoRepository->findOneById($pedido->getId());
+        $items=$itemRepository->findByPedido($pedido1);
+        /* foreach ($items as $item){
+            $producto=$item->getProducto();
+            array_push($productos,$producto);
+        }
+        return $this->render('pedido/show.html.twig', [
+            'pedido' => $pedido,'productos'=>$productos,
+        ]); */
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $pedidoRepository->save($pedido, true);
-
-            return $this->redirectToRoute('app_pedido_index', [], Response::HTTP_SEE_OTHER);
+            if (in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
+                return $this->redirectToRoute('app_pedido_index_all', [], Response::HTTP_SEE_OTHER);
+            }else{
+                return $this->redirectToRoute('app_pedido_index', ['id'=>$pedido->getIdUsuario()], Response::HTTP_SEE_OTHER);
+            } 
+            
+            //return $this->redirectToRoute('app_pedido_index', ['id'=>$pedido->getIdUsuario()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('pedido/edit.html.twig', [
@@ -66,13 +126,38 @@ class PedidoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_pedido_delete', methods: ['POST'])]
-    public function delete(Request $request, Pedido $pedido, PedidoRepository $pedidoRepository): Response
+    #[Route('/{id}', name: 'app_pedido_delete', methods: ['POST'], requirements:['id'=>'\d+'])]
+    public function delete(Request $request, Pedido $pedido,ItemRepository $itemRepository, PedidoRepository $pedidoRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$pedido->getId(), $request->request->get('_token'))) {
-            $pedidoRepository->remove($pedido, true);
-        }
 
-        return $this->redirectToRoute('app_pedido_index', [], Response::HTTP_SEE_OTHER);
+            $pedido=$pedidoRepository->findOneById($pedido->getId());
+            $pedidoRepository->remove($pedido, true); //al eliminar el pedido, como esta 
+                //configurado en cascade, se eliminan tambien todos los items asociados a 
+                //ese pedido de la tabla Items
+        } 
+
+        if (in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
+            return $this->redirectToRoute('app_pedido_index_all', [], Response::HTTP_SEE_OTHER);
+        }else{
+            return $this->redirectToRoute('app_pedido_index', [], Response::HTTP_SEE_OTHER);
+        }
+        
+    }
+
+    #[Route('/{id}/{id_item}', name: 'app_item_delete', methods: ['POST'], requirements:['id'=>'\d+'])]
+    public function deleteItem(Request $request, Pedido $pedido,int $id_item,PedidoRepository $pedidoRepository,ItemRepository $itemRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$pedido->getId(), $request->request->get('_token'))) {
+
+            $pedido=$pedidoRepository->findOneById($pedido->getId());
+            $item=$itemRepository->findOneById($id_item);
+            //$pedido->removeItem($item);
+            $itemRepository->remove($item,true);
+        } 
+
+        return $this->redirectToRoute('app_pedido_show', ['id'=>$pedido->getId()], Response::HTTP_SEE_OTHER);
+
+        
     }
 }

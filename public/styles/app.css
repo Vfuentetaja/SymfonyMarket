@@ -3,6 +3,11 @@
     height: 50px;
 }
 
+/* .media-imagen{
+    width: 100px;
+    height: 50px;
+} */
+
 .textos_cabecera{
     color:rgb(255, 255, 255)
 }
@@ -229,6 +234,24 @@ img {vertical-align: middle;}
 
 .contenedor #registration_form > div >input[type="text"]{   
     width: 60%;
+}
+
+.contenedor #pedido {
+    width: 100%;
+    margin: auto;
+    display: inline-block;
+}
+
+.contenedor #pedido > div {
+    margin-top: 2%;
+    display:flex;
+    justify-content: space-between;
+}
+
+.contenedor #pedido > div >label{   
+    font-family: cursive;
+    font-weight: bolder;
+    width: 35%;
 }
 
 

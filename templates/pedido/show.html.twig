@@ -3,12 +3,12 @@
 {% block title %}Pedido{% endblock %}
 
 {% block body %}
-    <h1>Pedido</h1>
+    <h1>Detalles pedido</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>Id del pedido</th>
                 <td>{{ pedido.id }}</td>
             </tr>
             <tr>
@@ -16,15 +16,29 @@
                 <td>{{ pedido.fechaPedido ? pedido.fechaPedido|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Id_usuario</th>
-                <td>{{ pedido.idUsuario }}</td>
+                <th>Nombre del destinatario</th>
+                <td>{{ pedido.destinatario}}</td>
+            </tr>
+            <tr>
+                <th>Direccion del destinatario</th>
+                <td>{{ pedido.direccionDestinatario }}</td>
             </tr>
         </tbody>
     </table>
+    <ul>
+    {% for item in pedido.items %}
+        <li>{{item.producto.nombre}}:  {{item.producto.precio}}.  Cantidad:{{item.cantidad}}  {{ include('item/_delete_form.html.twig') }}</li>
+    {% endfor %}
+    </ul>
+    <p>Total: </p>
+    {% if is_granted('ROLE_ADMIN')%}
+        <a href="{{path('app_pedido_index_all')}}">Volver a la lista de pedidos</a>
+    {% else %}
+        <a href="{{path('app_pedido_index', {'id': app.user.id}) }}">Volver a la lista de pedidos</a>
+    {% endif %}
+    
 
-    <a href="{{ path('app_pedido_index') }}">back to list</a>
+    {# <a href="{{ path('app_pedido_edit', {'id': pedido.id}) }}">edit</a> #}
 
-    <a href="{{ path('app_pedido_edit', {'id': pedido.id}) }}">edit</a>
-
-    {{ include('pedido/_delete_form.html.twig') }}
+    {# {{ include('pedido/_delete_form.html.twig') }} #}
 {% endblock %}

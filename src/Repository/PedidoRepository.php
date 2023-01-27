@@ -32,6 +32,7 @@ class PedidoRepository extends ServiceEntityRepository
 
     public function remove(Pedido $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
@@ -39,20 +40,17 @@ class PedidoRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Pedido[] Returns an array of Pedido objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllByUser($id_User): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.id_usuario = :val')
+            ->setParameter('val', $id_User)
+            //->orderBy('p.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Pedido
 //    {

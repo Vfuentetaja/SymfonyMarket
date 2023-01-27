@@ -4,7 +4,6 @@
 
 {% block body %}
     <h1>Pedido index</h1>
-
     <table class="table">
         <thead>
             <tr>
@@ -21,8 +20,10 @@
                 <td>{{ pedido.fechaPedido ? pedido.fechaPedido|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ pedido.idUsuario }}</td>
                 <td>
-                    <a href="{{ path('app_pedido_show', {'id': pedido.id}) }}">show</a>
-                    <a href="{{ path('app_pedido_edit', {'id': pedido.id}) }}">edit</a>
+                    <a href="{{ path('app_pedido_show', {'id': pedido.id}) }}">Mostrar pedido</a>
+                    <a href="{{ path('app_pedido_edit', {'id': pedido.id}) }}">Actualizar datos de envio</a>
+                    {# <a href="{{ path('app_pedido_delete', {'id': pedido.id}) }}">delete</a>  #}
+                    {{ include('pedido/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -33,5 +34,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_pedido_new') }}">Create new</a>
+    {# <a href="{{ path('app_pedido_new') }}">Create new</a> #}
 {% endblock %}

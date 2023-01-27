@@ -45,6 +45,7 @@ class Producto
     #[ORM\Column(nullable: true)]
     private ?int $descuento = null;
 
+    //#[ORM\OneToMany(mappedBy: 'producto', targetEntity: Item::class,cascade: ['persist','remove'])]
     #[ORM\OneToMany(mappedBy: 'producto', targetEntity: Item::class)]
     private Collection $items;
 

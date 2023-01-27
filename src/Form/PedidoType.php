@@ -14,6 +14,8 @@ class PedidoType extends AbstractType
         $builder
             ->add('fecha_pedido')
             ->add('id_usuario')
+            ->add('destinatario')
+            ->add('direccionDestinatario')
         ;
     }
 

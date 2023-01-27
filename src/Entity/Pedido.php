@@ -21,9 +21,15 @@ class Pedido
 
     #[ORM\Column]
     private ?int $id_usuario = null;
-
-    #[ORM\OneToMany(mappedBy: 'pedido', targetEntity: Item::class)]
+    //el nombre que le pasamos al hacer el mappedBy debe ser el de la tabla, no el de la clase
+    #[ORM\OneToMany(mappedBy: 'pedido', targetEntity: Item::class,cascade: ['persist','remove'])]
     private Collection $Items;
+
+    #[ORM\Column(length: 400, nullable: true)]
+    private ?string $destinatario = null;
+
+    #[ORM\Column(length: 600, nullable: true)]
+    private ?string $direccionDestinatario = null;
 
     public function __construct()
     {
@@ -85,6 +91,30 @@ class Pedido
                 $item->setPedido(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDestinatario(): ?string
+    {
+        return $this->destinatario;
+    }
+
+    public function setDestinatario(?string $destinatario): self
+    {
+        $this->destinatario = $destinatario;
+
+        return $this;
+    }
+
+    public function getDireccionDestinatario(): ?string
+    {
+        return $this->direccionDestinatario;
+    }
+
+    public function setDireccionDestinatario(?string $direccionDestinatario): self
+    {
+        $this->direccionDestinatario = $direccionDestinatario;
 
         return $this;
     }

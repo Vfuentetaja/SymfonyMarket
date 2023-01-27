@@ -34,6 +34,14 @@
 
       {% if is_granted('ROLE_ADMIN')%}
       <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_new')}}">
+          Crear producto
+        </a>
+      </li>
+      {% endif %}
+
+      {% if is_granted('ROLE_ADMIN')%}
+      <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_search_all')}}">
           Lista de productos
         </a>
@@ -42,18 +50,26 @@
 
       {% if is_granted('ROLE_ADMIN')%}
       <li class="nav-item active">
-        <a class="nav-link" href="{{path('app_producto_new')}}">
-          Crear producto
-        </a>
-      </li>
-    {% endif %}
-
-      {% if is_granted('ROLE_ADMIN')%}
-      <li class="nav-item active">
         <a class="nav-link" href="{{path('app_user_index')}}">
           Lista de usuarios
         </a>
       </li>
+      {% endif %}
+
+      {% if app.user %}
+        {% if is_granted('ROLE_ADMIN')%}
+        <li class="nav-item active">
+          <a class="nav-link" href="{{path('app_pedido_index_all')}}">
+            Lista de pedidos
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{{path('app_pedido_index', {'id': app.user.id}) }}">
+            Lista de pedidos
+          </a>
+        </li>
+        {% endif %}
       {% endif %}
     </ul>
   </div>

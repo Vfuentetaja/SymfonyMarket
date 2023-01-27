@@ -3,11 +3,17 @@
 {% block title %}Edit Pedido{% endblock %}
 
 {% block body %}
-    <h1>Edit Pedido</h1>
-
-    {{ include('pedido/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_pedido_index') }}">back to list</a>
-
-    {{ include('pedido/_delete_form.html.twig') }}
+    <div class="container contenedor">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Modificar pedido</h1>
+                {{ include('pedido/_form.html.twig', {'button_label': 'Actualizar datos de envio'}) }}
+                {% if is_granted('ROLE_ADMIN')%}
+                    <a class="btn btn-primary" href="{{path('app_pedido_index_all')}}">Volver a la lista de pedidos</a>
+                {% else %}
+                    <a class="btn btn-primary" href="{{path('app_pedido_index', {'id': app.user.id}) }}">Volver a la lista de pedidos</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
