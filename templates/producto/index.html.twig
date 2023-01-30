@@ -2,12 +2,10 @@
 
 {% block title %}Producto index{% endblock %}
 
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
-    <script type="text/javascript" src="{{ asset('js/sliders.js') }}"></script>
-{% endblock %}
+
 
 {% block body %}
+    <ul class="listaCarrito"></ul>
     <span class="titular_lista_index">
     {# {{app.session.isStarted()}} #}
         <h3>Novedades</h3>
@@ -194,4 +192,10 @@
         <a href="{{ path('app_producto_search_all') }}" class="btn btn-warning">Ver lista completa</a>
     </span>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    <script type="text/javascript" src="{{ asset('js/sliders.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/carrito-2.js') }}"></script>
 {% endblock %}

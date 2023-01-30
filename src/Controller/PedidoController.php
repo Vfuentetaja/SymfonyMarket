@@ -45,21 +45,30 @@ class PedidoController extends AbstractController
         $pedido->setDestinatario($this->getUser()->getNombre());
         $pedido->setDireccionDestinatario($this->getUser()->getDireccion());
 
-        $producto1= $productoRepository->findOneByNombre('Bandera de Namy');
-        $producto2= $productoRepository->findOneByNombre('Barco de Luffy');
-
-        $item1= new Item();
-        $item1->setProducto($producto1);
-        $item1->setCantidad(3);
-        $item1->setPedido($pedido);
-
-        $item2= new Item();
-        $item2->setProducto($producto2);
-        $item2->setCantidad(2);
-        $item2->setPedido($pedido);
-
-        $pedido->addItem($item1);
-        $pedido->addItem($item2);
+        //sacamos los datos de la URL
+        $datosCar = $_GET['array']; 
+        $arr=explode("} {", $datosCar);
+        $arrDatos=array("");
+        for($i=0; $i<count($arr); $i++){
+            $arrAux = explode(",", $arr[$i]);
+            array_push($arrDatos, $arrAux);
+        }
+        $arrFinal=array();
+        for($i=1; $i<count($arr); $i++){
+            for($j=0; $j<3; $j++){
+                $arrAux = explode(":", $arrDatos[$i][$j]);
+                array_push($arrFinal, $arrAux);
+            }
+        }
+        //creamos el pedido con los datos que hemos sacado
+        for($i=0; $i<count($arrFinal); $i+=3){
+                $item1= new Item();
+                $producto1= $productoRepository->findOneByNombre($arrFinal[$i][1]);
+                $item1->setProducto($producto1);
+                $item1->setCantidad($arrFinal[$i+2][1]);
+                $item1->setPedido($pedido);
+                $pedido->addItem($item1);
+            }
 
         $pedidoRepository->save($pedido, true);
 
