@@ -21,9 +21,14 @@ class PedidoController extends AbstractController
     #[Route('/', name: 'app_pedido_index_all', methods: ['GET'])]
     public function indexAll(PedidoRepository $pedidoRepository): Response
     {
-         return $this->render('pedido/index.html.twig', [
-            'pedidos' => $pedidoRepository->findAll(),
-        ]); 
+        try{
+            return $this->render('pedido/index.html.twig', [
+                'pedidos' => $pedidoRepository->findAll(),
+            ]); 
+        }catch(AccessDeniedHttpException $ex){
+            return $this->redirectToRoute('app_producto_index', [], Response::HTTP_SEE_OTHER);
+        }
+
     }
 
     #[Route('/{id}', name: 'app_pedido_index', methods: ['GET'], requirements:['id'=>'\d+'])]
@@ -37,7 +42,7 @@ class PedidoController extends AbstractController
 
 
     #[Route('/new', name: 'app_pedido_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository): Response
+    public function new(Request $request, PedidoRepository $pedidoRepository, ProductoRepository $productoRepository,PedidoService $pedidoService): Response
     {
         $pedido = new Pedido();
         $pedido->setFechaPedido(new \DateTime());
@@ -46,36 +51,42 @@ class PedidoController extends AbstractController
         $pedido->setDireccionDestinatario($this->getUser()->getDireccion());
 
         //sacamos los datos de la URL
+        $auxDatos="";
+        $auxDatos2="";
         $datosCar = $_GET['array']; 
+        $arr=array();
         $arr=explode("} {", $datosCar);
-        $arrDatos=array("");
-        for($i=0; $i<count($arr); $i++){
-            $arrAux = explode(",", $arr[$i]);
-            array_push($arrDatos, $arrAux);
+
+         $arrFinal=array();
+
+        foreach($arr as $value){
+            $auxDatos.=$value.",";
+            
         }
-        $arrFinal=array();
-        for($i=1; $i<count($arr); $i++){
-            for($j=0; $j<3; $j++){
-                $arrAux = explode(":", $arrDatos[$i][$j]);
-                array_push($arrFinal, $arrAux);
-            }
+        $arrDatos=explode(",", $auxDatos);
+        foreach($arrDatos as $value){
+            $auxDatos2.=$value.":";
+            
         }
+        $arrFinal=explode(":", $auxDatos2);
+        //dd($arrFinal);
         //creamos el pedido con los datos que hemos sacado
-        for($i=0; $i<count($arrFinal); $i+=3){
+        for($i=0; $i<(count($arrFinal)-2); $i+=6){
                 $item1= new Item();
-                $producto1= $productoRepository->findOneByNombre($arrFinal[$i][1]);
+                $producto1= $productoRepository->findOneByNombre($arrFinal[$i+1]);
                 $item1->setProducto($producto1);
-                $item1->setCantidad($arrFinal[$i+2][1]);
+                $item1->setCantidad(intval($arrFinal[$i+5]));
                 $item1->setPedido($pedido);
                 $pedido->addItem($item1);
             }
 
         $pedidoRepository->save($pedido, true);
+        $pedidoService->modificarCantidadProductoDisponiblePedido($pedido);
 
-        return $this->redirectToRoute('app_pedido_show', ['id'=>$pedido->getId()], Response::HTTP_SEE_OTHER);
-    }
+        return $this->redirectToRoute('app_pedido_show', ['id'=>$pedido->getId()], Response::HTTP_SEE_OTHER); $pedido = new Pedido();
+}
 
-    #[Route('/{id}/show', name: 'app_pedido_show', methods: ['GET'], requirements:['id'=>'\d+'])]
+    #[Route('/show/{id}', name: 'app_pedido_show', methods: ['GET'], requirements:['id'=>'\d+'])]
     public function show(Pedido $pedido,PedidoService $pedidoService): Response
     {
         $total=$pedidoService->calcularTotal($pedido);
@@ -84,7 +95,7 @@ class PedidoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_pedido_edit', methods: ['GET', 'POST'], requirements:['id'=>'\d+'])]
+    #[Route('/edit/{id}', name: 'app_pedido_edit', methods: ['GET', 'POST'], requirements:['id'=>'\d+'])]
     public function edit(Request $request, Pedido $pedido, PedidoRepository $pedidoRepository): Response
     {
         $form = $this->createForm(PedidoType::class, $pedido);
@@ -115,22 +126,23 @@ class PedidoController extends AbstractController
                 //configurado en cascade, se eliminan tambien todos los items asociados a 
                 //ese pedido de la tabla Items
         } 
-
+        
         if (in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
             return $this->redirectToRoute('app_pedido_index_all', [], Response::HTTP_SEE_OTHER);
         }else{
-            return $this->redirectToRoute('app_pedido_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_pedido_index', ['id'=>$this->getUser()->getId()], Response::HTTP_SEE_OTHER);
         }
         
     }
 
     #[Route('/{id}/{id_item}', name: 'app_item_delete', methods: ['POST'], requirements:['id'=>'\d+'])]
-    public function deleteItem(Request $request, Pedido $pedido,int $id_item,ItemRepository $itemRepository): Response
+    public function deleteItem(Request $request, Pedido $pedido,int $id_item,ItemRepository $itemRepository,PedidoService $pedidoService): Response
     {
         if ($this->isCsrfTokenValid('delete'.$pedido->getId(), $request->request->get('_token'))) {
 
             
             $item=$itemRepository->findOneById($id_item);
+            $pedidoService->modificarCantidadProductoDisponibleItem($item);
             $itemRepository->remove($item,true);
         } 
 
@@ -139,9 +151,10 @@ class PedidoController extends AbstractController
         
     }
 
-    #[Route('/pago', name: 'app_pedido_pago', methods: ['GET'])]
-    public function formPagar(): Response
+    #[Route('/pago/{id}', name: 'app_pedido_pago', methods: ['GET'])]
+    public function formPagar(Pedido $pedido): Response
     {
+        
         return $this->render('pedido/pago.html.twig', []); 
     }
 }

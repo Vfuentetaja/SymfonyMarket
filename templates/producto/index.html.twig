@@ -5,11 +5,10 @@
 
 
 {% block body %}
-    <ul class="listaCarrito"></ul>
+    
     <span class="titular_lista_index">
     {# {{app.session.isStarted()}} #}
         <h3>Novedades</h3>
-        <a class="nav-link" href="{{path('app_pedido_new')}}">Crear nuevo pedido</a>
 
     </span>  
     <section class="novedades">
@@ -197,5 +196,4 @@
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
     <script type="text/javascript" src="{{ asset('js/sliders.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/carrito-2.js') }}"></script>
 {% endblock %}

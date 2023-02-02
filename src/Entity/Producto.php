@@ -46,7 +46,7 @@ class Producto
     private ?int $descuento = null;
 
     //#[ORM\OneToMany(mappedBy: 'producto', targetEntity: Item::class,cascade: ['persist','remove'])]
-    #[ORM\OneToMany(mappedBy: 'producto', targetEntity: Item::class)]
+    #[ORM\OneToMany(mappedBy: 'producto', targetEntity: Item::class,cascade: ['persist','remove'])]
     private Collection $items;
 
     public function __construct()

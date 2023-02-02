@@ -57,7 +57,7 @@ class ProductoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_producto_edit', methods: ['GET', 'POST'],requirements:['id'=>'\d+'])]
+    #[Route('/edit/{id}', name: 'app_producto_edit', methods: ['GET', 'POST'],requirements:['id'=>'\d+'])]
     public function edit(Request $request, Producto $producto, ProductoRepository $productoRepository): Response
     {
         $form = $this->createForm(ProductoType::class, $producto);
@@ -75,14 +75,14 @@ class ProductoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_producto_delete', methods: ['POST'],requirements:['id'=>'\d+'])]
+    #[Route('/delete/{id}', name: 'app_producto_delete', methods: ['GET','POST'],requirements:['id'=>'\d+'])]
     public function delete(Request $request, Producto $producto, ProductoRepository $productoRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$producto->getId(), $request->request->get('_token'))) {
             $productoRepository->remove($producto, true);
         }
 
-        return $this->redirectToRoute('app_producto_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_producto_search_all', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/buscar', name: 'app_producto_search_all')]

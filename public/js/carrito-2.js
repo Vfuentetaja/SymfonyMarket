@@ -1,9 +1,14 @@
+var listaCarrito;
+window.addEventListener("load",function(){
+    listaCarrito = document.querySelector('.listaCarrito');
+    document.getElementById("botonComprar").addEventListener("click", addToCart);
+});
+
 // Abre la conexión con la base de datos
 var request = indexedDB.open("carrito", 1);
 var db;
 //ejecutar al cargar
 
-var listaCarrito = document.querySelector('.listaCarrito')
 
 // Crea el almacén de objetos si no existe
 request.onupgradeneeded = function(event) {
@@ -249,6 +254,7 @@ request.onsuccess = function(event) {
     addToShoppingCartButtons.forEach((addToCartButton) => {
     addToCartButton.addEventListener('click', addToCart);
     });
+};
 
 function addToCart() {
     var transaction = db.transaction("carrito", "readwrite");
@@ -268,5 +274,3 @@ function addToCart() {
         console.log("Error producto ya esta en el carrito.");
     };
 }
-
-};

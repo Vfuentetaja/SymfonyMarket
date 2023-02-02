@@ -40,12 +40,20 @@ class PedidoRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('p')
+              ->orderBy('p.id', 'DESC')
+              ->getQuery()
+              ->getResult();
+    }
+
     public function findAllByUser($id_User): array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.id_usuario = :val')
             ->setParameter('val', $id_User)
-            //->orderBy('p.id', 'ASC')
+            ->orderBy('p.id', 'DESC')
             //->setMaxResults(10)
             ->getQuery()
             ->getResult()

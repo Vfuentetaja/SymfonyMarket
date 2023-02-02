@@ -13,11 +13,11 @@
             </tr>
             <tr>
                 <th>Nombre</th>
-                <td>{{ producto.nombre }}</td>
+                <td class="productoNombre">{{ producto.nombre }}</td>
             </tr>
             <tr>
                 <th>Precio</th>
-                <td>{{ producto.precio }}</td>
+                <td class="productoPrecio">{{ producto.precio }}</td>
             </tr>
             <tr>
                 <th>Descripcion</th>
@@ -55,8 +55,10 @@
     </table>
 
     <a class="btn btn-info" href="{{ path('app_producto_index') }}">Volver a la lista</a>
-
-    <a class="btn btn-primary" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>
-    <a class="btn btn-success addToCart">Añadir al carrito</a>
-    {# {{ include('producto/_delete_form.html.twig') }} #}
+    {% if is_granted('ROLE_ADMIN')%}
+        <a class="btn btn-primary" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>
+    {% endif %}
+    {% if app.user %}
+        <button class="btn btn-success" id="botonComprar">Añadir al carrito</button>
+    {% endif %}
 {% endblock %}

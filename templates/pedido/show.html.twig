@@ -31,10 +31,10 @@
     {% endfor %}
     </ul>
     <p>Total: {{total}}</p>
-    <a class="btn btn-success" href="{{path('app_pedido_pago')}}">Pagar</a>
     {% if is_granted('ROLE_ADMIN')%}
         <a href="{{path('app_pedido_index_all')}}">Volver a la lista de pedidos</a>
     {% else %}
+        <a class="btn btn-success" href="{{path('app_pedido_pago', {'id': pedido.id})}}" onclick="vaciarCarro()">Pagar</a>
         <a href="{{path('app_pedido_index', {'id': app.user.id}) }}">Volver a la lista de pedidos</a>
     {% endif %}
     

@@ -17,8 +17,6 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
-        //solo los usuarios ADMIN pueden entrar a esta pagina
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
@@ -32,7 +30,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user,
     UserPasswordHasherInterface $userPasswordHasher, UserRepository $userRepository): Response
     {
@@ -66,10 +64,16 @@ class UserController extends AbstractController
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $userRepository->remove($user, true);
+        if ($this->isGranted('ROLE_ADMIN')){
+            if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+                $userRepository->remove($user, true);
+            }
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }else{
+            //aqui habria que meter a la Entity User un atributo "activo" true/false para 
+            //que el usuario que quiera eliminar su perfil deje de tener acceso a dicho 
+            //perfil, pero sin eliminar dicho perfil de la base de datos
+            return $this->redirectToRoute('app_logout', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
 }
