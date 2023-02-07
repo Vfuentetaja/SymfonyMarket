@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto col-12 d-flex flex-row justify-content-between">
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_index')}}">
+          Pagina de inicio
+        </a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_regalos')}}">
+          Regalos
+        </a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_ropa')}}">
+          Ropa
+        </a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_decoracion')}}">
+          Decoracion
+        </a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_figuras')}}">
+          Figuras
+        </a>
+      </li>
+
+      {% if is_granted('ROLE_ADMIN')%}
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_new')}}">
+          Crear producto
+        </a>
+      </li>
+      {% endif %}
+
+      {% if is_granted('ROLE_ADMIN')%}
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_producto_search_all')}}">
+          Lista de productos
+        </a>
+      </li>
+      {% endif %}
+
+      {% if is_granted('ROLE_ADMIN')%}
+      <li class="nav-item active">
+        <a class="nav-link" href="{{path('app_user_index')}}">
+          Lista de usuarios
+        </a>
+      </li>
+      {% endif %}
+
+      {% if app.user %}
+        {% if is_granted('ROLE_ADMIN')%}
+        <li class="nav-item active">
+          <a class="nav-link" href="{{path('app_pedido_index_all')}}">
+            Lista de pedidos
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{{path('app_pedido_index', {'id': app.user.id}) }}">
+            Lista de pedidos
+          </a>
+        </li>
+        {% endif %}
+      {% endif %}
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,12 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="collapse navbar-collapse  barra-busqueda-cabecera" id="navbarSupportedContent">
+    <form class="form-search content-search navbar-form" action="{{ path('app_producto_search') }}" method="post">
+      <div class="input-group">
+          <input placeholder="Buscar" class="form-control form-text input-barra-busqueda" name="textoBuscado" type="text" size="100" />
+          <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary"><img src="{{ asset('images/lupa_barra_busqueda.jpg') }}" alt="Foto lupa" class="mini-imagen"/></button>
+          </span>
+      </div>
+    </form>
+  </div>
+</nav>
