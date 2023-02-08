@@ -4,38 +4,38 @@
 
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_index')}}">
-          Pagina de inicio
+          {{ 'Pagina principal'|trans }}
         </a>
       </li>
 
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_regalos')}}">
-          Regalos
+          {{ 'Regalos'|trans }}
         </a>
       </li>
 
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_ropa')}}">
-          Ropa
+          {{ 'Ropa'|trans }}
         </a>
       </li>
 
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_decoracion')}}">
-          Decoracion
+          {{ 'Decoracion'|trans }}
         </a>
       </li>
 
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_figuras')}}">
-          Figuras
+          {{ 'Figuras'|trans }}
         </a>
       </li>
 
       {% if is_granted('ROLE_ADMIN')%}
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_new')}}">
-          Crear producto
+          {{ 'Crear producto'|trans }}
         </a>
       </li>
       {% endif %}
@@ -43,7 +43,7 @@
       {% if is_granted('ROLE_ADMIN')%}
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_producto_search_all')}}">
-          Lista de productos
+          {{ 'Listar producto'|trans }}
         </a>
       </li>
       {% endif %}
@@ -51,7 +51,7 @@
       {% if is_granted('ROLE_ADMIN')%}
       <li class="nav-item active">
         <a class="nav-link" href="{{path('app_user_index')}}">
-          Lista de usuarios
+          {{ 'Listar usuarios'|trans }}
         </a>
       </li>
       {% endif %}
@@ -60,13 +60,13 @@
         {% if is_granted('ROLE_ADMIN')%}
         <li class="nav-item active">
           <a class="nav-link" href="{{path('app_pedido_index_all')}}">
-            Lista de pedidos
+            {{ 'Listar pedidos'|trans }}
           </a>
         </li>
         {% else %}
         <li class="nav-item active">
           <a class="nav-link" href="{{path('app_pedido_index', {'id': app.user.id}) }}">
-            Lista de pedidos
+            {{ 'Listar pedidos'|trans }}
           </a>
         </li>
         {% endif %}

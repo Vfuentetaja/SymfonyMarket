@@ -9,33 +9,34 @@
         <tbody>
             <tr>
                 <th>Id del pedido</th>
-                <td>{{ pedido.id }}</td>
+                <td class="registro">{{ pedido.id }}</td>
             </tr>
             <tr>
                 <th>Fecha_pedido</th>
-                <td>{{ pedido.fechaPedido ? pedido.fechaPedido|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="registro">{{ pedido.fechaPedido ? pedido.fechaPedido|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Nombre del destinatario</th>
-                <td>{{ pedido.destinatario}}</td>
+                <td class="registro">{{ pedido.destinatario}}</td>
             </tr>
             <tr>
                 <th>Direccion del destinatario</th>
-                <td>{{ pedido.direccionDestinatario }}</td>
+                <td class="registro">{{ pedido.direccionDestinatario }}</td>
             </tr>
         </tbody>
     </table>
-    <ul>
+
+    <ul id="listaItems">
     {% for item in pedido.items %}
-        <li>{{item.producto.nombre}}:  {{item.producto.precio}}.  Cantidad:{{item.cantidad}}  {{ include('item/_delete_form.html.twig') }}</li>
+        <li class="registro">{{item.producto.nombre}}:  {{item.producto.precio}}.  Cantidad:{{item.cantidad}}  {{ include('item/_delete_form.html.twig') }}</li>
     {% endfor %}
+        <li class="registro">TOTAL: {{total}}</li>
     </ul>
-    <p>Total: {{total}}</p>
     {% if is_granted('ROLE_ADMIN')%}
-        <a href="{{path('app_pedido_index_all')}}">Volver a la lista de pedidos</a>
+        <a class="btn btn-primary" href="{{path('app_pedido_index_all')}}">Volver a la lista de pedidos</a>
     {% else %}
         <a class="btn btn-success" href="{{path('app_pedido_pago', {'id': pedido.id})}}" onclick="vaciarCarro()">Pagar</a>
-        <a href="{{path('app_pedido_index', {'id': app.user.id}) }}">Volver a la lista de pedidos</a>
+        <a class="btn btn-primary" href="{{path('app_pedido_index', {'id': app.user.id}) }}">Volver a la lista de pedidos</a>
     {% endif %}
     
 

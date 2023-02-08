@@ -6,12 +6,12 @@
     <div class="container contenedor">
         <div class="row">
             <div class="col-xs-12">
-                <h1>Modificar pedido</h1>
+                <h1>{{ 'Modificar pedido'|trans }}</h1>
                 {{ include('pedido/_form.html.twig', {'button_label': 'Actualizar datos de envio'}) }}
                 {% if is_granted('ROLE_ADMIN')%}
-                    <a class="btn btn-primary" href="{{path('app_pedido_index_all')}}">Volver a la lista de pedidos</a>
+                    <a class="btn btn-primary" href="{{path('app_pedido_index_all')}}">{{ 'Volver lista pedidos'|trans }}</a>
                 {% else %}
-                    <a class="btn btn-primary" href="{{path('app_pedido_index', {'id': app.user.id}) }}">Volver a la lista de pedidos</a>
+                    <a class="btn btn-primary" href="{{path('app_pedido_index', {'id': app.user.id}) }}">{{ 'Volver lista pedidos'|trans }}</a>
                 {% endif %}
             </div>
         </div>

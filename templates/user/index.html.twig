@@ -21,19 +21,19 @@
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.nombre }}</td>
-                <td>{{ user.apellidos }}</td>
-                <td>{{ user.direccion }}</td>
-                <td>{{ user.fechaNacimiento ? user.fechaNacimiento|date('Y-m-d') : '' }}</td>
+                <td class="registro">{{ user.id }}</td>
+                <td class="registro">{{ user.email }}</td>
+                <td class="registro">{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td class="registro">{{ user.nombre }}</td>
+                <td class="registro">{{ user.apellidos }}</td>
+                <td class="registro">{{ user.direccion }}</td>
+                <td class="registro">{{ user.fechaNacimiento ? user.fechaNacimiento|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a class="btn btn-info" href="{{ path('app_user_show', {'id': user.id}) }}">Detalles</a>
-                    <a class="btn btn-primary" href="{{ path('app_user_edit', {'id': user.id}) }}">Actualizar</a>
-                    
-                    {# <a href="{{ path('app_user_delete', {'id': user.id}) }}">delete</a> #}
-                    {{ include('user/_delete_form.html.twig') }}
+                    <div class="contenedor-btn">
+                        <a class="btn btn-primary" href="{{ path('app_user_show', {'id': user.id}) }}">Detalles</a>
+                        <a class="btn btn-warning" href="{{ path('app_user_edit', {'id': user.id}) }}">Actualizar</a>
+                        {{ include('user/_delete_form.html.twig') }}
+                    </div>
                 </td>
             </tr>
         {% else %}

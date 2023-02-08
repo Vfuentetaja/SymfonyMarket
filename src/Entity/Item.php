@@ -21,7 +21,7 @@ class Item
     #[ORM\Column]
     private ?int $cantidad = null;
 
-    #[ORM\ManyToOne(targetEntity: Pedido::class, inversedBy: 'items')]
+    #[ORM\ManyToOne(targetEntity: Pedido::class, inversedBy: 'Items')]
     #[ORM\JoinColumn(name: 'pedido_id', referencedColumnName: 'id', nullable: false)]
     private ?Pedido $pedido = null;
 

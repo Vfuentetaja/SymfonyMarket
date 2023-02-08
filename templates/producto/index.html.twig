@@ -5,10 +5,10 @@
 
 
 {% block body %}
-    
+    <ul id="listaCarrito" class="listaCarrito"></ul>
     <span class="titular_lista_index">
     {# {{app.session.isStarted()}} #}
-        <h3>Novedades</h3>
+        <h3>{{ 'Novedades'|trans }}</h3>
 
     </span>  
     <section class="novedades">
@@ -52,7 +52,7 @@
     </section>
 
     <span class="titular_lista_index">
-        <h3>Destacados</h3>
+        <h3>{{ 'Destacados'|trans }}</h3>
     </span>
     <section class="destacados">
       <div class="slideshow-container">
@@ -98,7 +98,7 @@
 
 
     <span class="titular_lista_index">
-        <h3>Descuentos</h3>
+        <h3>{{ 'Descuentos'|trans }}</h3>
     </span>
     <section class="descuentos">
       <div class="slideshow-container">
@@ -143,9 +143,11 @@
     </section>
 
     <span class="titular_lista_index">
-        <h3>Nuestros productos</h3>
+        <h3>{{ 'Nuestros productos'|trans }}</h3>
     </span>
     <section class="columna-productos">
+        <ul id="listaCarrito" class="listaCarrito"></ul>
+
         {% for producto in productos %}
             {% if loop.index <= 4 %}
                 <div class="contenido_stories">
@@ -196,4 +198,6 @@
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
     <script type="text/javascript" src="{{ asset('js/sliders.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/carrito.js') }}"></script>
+
 {% endblock %}

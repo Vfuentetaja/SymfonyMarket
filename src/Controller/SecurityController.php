@@ -31,6 +31,6 @@ class SecurityController extends AbstractController
         //del logout en el security.yaml, aunque tambien podemos hacerlo a traves del request
         //como aparece aqui
         //$request->getSession()->invalidate();
-        return $this->redirectToRoute('app_producto_index', [], Response::HTTP_SEE_OTHER);
+        //return $this->redirectToRoute('app_producto_index', [], Response::HTTP_SEE_OTHER);
     }
 }

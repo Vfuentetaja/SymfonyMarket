@@ -1,15 +1,31 @@
+body{
+    background: url("../images/fondo_pantalla.png") no-repeat fixed;
+}
+
+.mini-bandera{
+    width: 20px;
+    height: 15px;
+}
+
+.mini-btn {
+    width: 25px;
+    height: 25px;
+}
 .mini-imagen{
     width: 50px;
     height: 50px;
 }
 
-/* .media-imagen{
-    width: 100px;
-    height: 50px;
-} */
+.logo-imagen{
+    width: 230px;
+    height: 60px;
+}
 
-.textos_cabecera{
-    color:rgb(255, 255, 255)
+h3{
+    font-family: Arial Black, Helvetica, sans-serif;
+    font-size: larger;
+    text-align: center;
+    color:rgb(42, 5, 255);
 }
 
 
@@ -21,7 +37,7 @@ img {vertical-align: middle;}
 
 /* Slideshow container */
 .slideshow-container {
-  width: 90%;
+  width: 100%;
   position: relative;
   margin: auto;
   margin-bottom: 5vh;
@@ -35,9 +51,9 @@ img {vertical-align: middle;}
   width: auto;
   padding: 16px;
   margin-top: -22px;
-  color: white;
+  color: rgb(42, 5, 255);
   font-weight: bold;
-  font-size: 18px;
+  font-size: 38px;
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
@@ -56,6 +72,8 @@ img {vertical-align: middle;}
   color: black;
 }
 /*CODIGO DE LOS SLIDER*/
+
+
 
 /*CODIGO PARA CREAR LAS FILAS DE OBJETOS EN REGALOS,ROPA,DECORACION,FIGURAS Y RESULTADOS DE BUSQUEDA*/
 .contenido_filas{
@@ -88,7 +106,7 @@ img {vertical-align: middle;}
 .descuentos,.destacados,.novedades{
     width: 100%;
     height: 50vh;
-    background-color: rgb(42, 5, 255);
+    /*background-color: rgb(42, 5, 255);*/
     margin-bottom: 5vh;
 }
 
@@ -107,7 +125,7 @@ img {vertical-align: middle;}
 .contenido1{
     width: 100%;
     height: 50vh;
-    margin-left: 1%;
+    /*margin-left: 1%;*/
     margin-right: 1%;
     display:grid;
     grid-template-columns: repeat(3, 25%);
@@ -269,15 +287,19 @@ img {vertical-align: middle;}
 .credit-card-div .pad-adjust { padding-top:10px; }
 /*CODIGO DEL FORMULARIO DE PAGO*/
 
+/*CODIGO DEL HEADER*/
+.textos_cabecera{
+    color:rgb(255, 255, 255)
+}
+/*CODIGO DEL HEADER*/
 
-
-/*CODIGO DE LA BARRA DE BUSQUEDA DEL HEADER*/
+/*CODIGO DE LA BARRA DE BUSQUEDA*/
 .barra-busqueda-cabecera{
     display:flex;
     justify-content: center;
     align-content: center;
 }
-/*CODIGO DE LA BARRA DE BUSQUEDA DEL HEADER*/
+/*CODIGO DE LA BARRA DE BUSQUEDA*/
 
 
 
@@ -287,9 +309,151 @@ footer{
 }
 /*CODIGO DEL FOOTER*/
 
-/*CODIGO DEL FORMULARIO DE PAGO*/
-.credit-card-div  span { padding-top:10px; }
-.credit-card-div img { padding-top:30px; }
-.credit-card-div .small-font { font-size:9px; }
-.credit-card-div .pad-adjust { padding-top:10px; }
-/*CODIGO DEL FORMULARIO DE PAGO*/
+/*CODIGO DEL BOTON DEL FINAL DE PRODUCTOS INDEX*/
+.boton_lista_index{
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 2%;
+}
+/*CODIGO DEL BOTON DEL FINAL DE PRODUCTOS INDEX*/
+
+
+/*CODIGO DE LAS TABLAS CON LA DESCRIPCION Y LSITADO DE REGISTROS*/
+tr>th{
+    font-size: larger;
+}
+.registro{
+    font-weight: bolder;
+}
+
+.contenedor-btn{
+    width: 80%;
+    height: 100px;
+    display: flex;
+}
+.contenedor-btn > *{
+    font-family: cursive;
+    max-height: 6.5vh;
+    margin:10px;
+    font-weight: bolder;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.contenedor-btn > button{
+    font-family: cursive;
+    max-height: 10vh;
+    font-weight: bolder;
+} 
+
+#listaItems{
+    list-style: none;
+}
+
+/*CODIGO DE LAS TABLAS CON LA DESCRIPCION Y LSITADO DE REGISTROS*/
+
+/* --------------------Carrito -------------------------- */
+
+
+.listaCarrito{
+    display: none;
+    position: absolute;
+    z-index: 3;
+    left:73.7vw;
+    top:39vh;
+    width:25vw;
+    background-color:black;
+    border-radius: 5%;
+    padding-left: 0px;
+    /* border: solid black; */
+}
+.listaCarrito :first-child{
+    margin-top: 4vh;
+}
+.listaCarrito > *{
+    margin:0.3px;
+    /* padding: 2vw; */
+
+
+}
+.listaCarrito > button{
+    margin-bottom: 2vw;
+    margin-left: 2vw;
+}
+.listaCarrito > div > *{
+    margin-left: 5vw;
+    margin: 0.5vw;
+    /* padding-top: 1vw; */
+    margin-left: 1vw;
+}
+.listaCarrito > div > button:last-of-type{
+    margin-bottom: 2vw;
+}
+.nombreProducto{
+    margin-top: 2vw;
+}
+.listaCarrito > div{
+    width: 22.5vw;
+    max-width: 25vw;
+    align-items: center;
+    margin:0.5vw;
+    margin-left: 1vw;
+    border-radius: 15%;
+    background-color: cyan;
+    /* border: solid black ; */
+
+
+}
+.listaCarrito > .total{
+    max-width: 15vw;
+    padding: 2vw;
+    padding-top: 1.5vw;
+    margin-left: 10vw;
+    width: 13vw;
+    height: 10vh;
+    border: solid black 0.1px;
+
+
+}
+
+
+/* ---------------------Fin carrito ---------------------------- */
+
+/*----------Captcha----------------------*/
+#image {
+    margin-top: 20px;
+    width: 75px;
+    font-weight: 400;
+    padding: 0 !important;
+    padding-bottom: 10px !important;
+    height: 40px;
+    user-select: none;
+    text-decoration: line-through red;
+    font-style: italic;
+    font-size: 25px;
+    border: rgb(0, 0, 0) 2px solid;
+    margin-left: 10px;
+    background-color: rgb(187, 186, 186);
+  }
+  #user-input-captcha {
+    width: auto;
+    margin-right: 10px;
+    padding: 10px;
+    padding-bottom: 0px;
+    height: 40px;
+    border: red 0px solid;
+  }
+  input {
+    border: 1px black solid;
+  }
+  .inline {
+    display: inline-block;
+  }
+  #btn-login {
+    color: rgb(0, 0, 0);
+    margin: 10px;
+    background-color: rgb(255, 255, 255);
+    border: none;
+  }
+/*----------Fin Captcha----------------------*/
