@@ -456,4 +456,9 @@ tr>th{
     background-color: rgb(255, 255, 255);
     border: none;
   }
+
+  #aceptar {
+    text-align: left;
+    margin-left: 13.5%;
+  }
 /*----------Fin Captcha----------------------*/

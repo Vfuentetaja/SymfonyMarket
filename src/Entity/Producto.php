@@ -48,9 +48,13 @@ class Producto
     #[ORM\OneToMany(mappedBy: 'producto', targetEntity: Item::class,cascade: ['persist','remove'])]
     private Collection $items;
 
+    #[ORM\OneToMany(mappedBy: 'producto', targetEntity: Pregunta::class)]
+    private Collection $preguntas;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->preguntas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +206,36 @@ class Producto
             // set the owning side to null (unless already changed)
             if ($item->getProducto() === $this) {
                 $item->setProducto(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pregunta>
+     */
+    public function getPreguntas(): Collection
+    {
+        return $this->preguntas;
+    }
+
+    public function addPregunta(Pregunta $pregunta): self
+    {
+        if (!$this->preguntas->contains($pregunta)) {
+            $this->preguntas->add($pregunta);
+            $pregunta->setProducto($this);
+        }
+
+        return $this;
+    }
+
+    public function removePregunta(Pregunta $pregunta): self
+    {
+        if ($this->preguntas->removeElement($pregunta)) {
+            // set the owning side to null (unless already changed)
+            if ($pregunta->getProducto() === $this) {
+                $pregunta->setProducto(null);
             }
         }
 

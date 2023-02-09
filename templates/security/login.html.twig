@@ -34,7 +34,7 @@
           <div id="user-input-captcha" class="inline">
             <input type="text" id="submit" placeholder="Captcha code" />
           </div>
-          <button id="btn-login" onclick="printmsg()"><img src="{{ asset('images/' ~ 'reintentar.webp') }}" class="mini-btn" alt="Recargar"></button>
+          <button id="btn-login"><img src="{{ asset('images/' ~ 'reintentar.webp') }}" class="mini-btn" alt="Recargar"></button>
           <div class="inline" onclick="generate()">
             <i class="fas fa-sync"></i>
           </div>
@@ -42,8 +42,9 @@
               <div id="image" class="inline" selectable="False">
               </div>
               <p id="key"></p>
+              <p id="aceptar"><input type="checkbox" onclick="printmag()"> No soy un robot </p> <br>
 
-            <button  type="submit" class="btn btn-lg btn-primary btn-round">Enviar</button>
+            <button  type="submit" class="btn btn-lg btn-primary btn-round" disabled>Enviar</button>
 
             <div class="text-center text-muted delimiter">
 		{% if error %}

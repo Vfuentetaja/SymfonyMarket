@@ -62,4 +62,20 @@
     {% if app.user %}
 
     {% endif %}
+
+    {% if app.user%}
+    <h4>Preguntas</h4>
+    <form method="post" id="formularioPregunta" action= {{ path('app_pregunta_new', {'id': producto.id}) }}>
+        <label for="inputTexto">Escriba su pregunta</label>
+        <textarea id="inputTexto" name="texto" rows="5" cols="33" required autofocus></textarea>
+    	<input type="submit" value="Enviar" id="enviarPregunta" class="btn btn-primary">
+    </form>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    <script type="text/javascript" src="{{ asset('js/carrito.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/preguntas.js') }}"></script>
 {% endblock %}

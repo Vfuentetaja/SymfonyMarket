@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -41,6 +43,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $fecha_nacimiento = null;
+
+    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Pregunta::class, cascade: ['persist','remove'])]
+    private Collection $preguntas;
+
+    public function __construct()
+    {
+        $this->preguntas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -156,6 +166,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFechaNacimiento(?\DateTimeInterface $fecha_nacimiento): self
     {
         $this->fecha_nacimiento = $fecha_nacimiento;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pregunta>
+     */
+    public function getPreguntas(): Collection
+    {
+        return $this->preguntas;
+    }
+
+    public function addPregunta(Pregunta $pregunta): self
+    {
+        if (!$this->preguntas->contains($pregunta)) {
+            $this->preguntas->add($pregunta);
+            $pregunta->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePregunta(Pregunta $pregunta): self
+    {
+        if ($this->preguntas->removeElement($pregunta)) {
+            // set the owning side to null (unless already changed)
+            if ($pregunta->getUser() === $this) {
+                $pregunta->setUser(null);
+            }
+        }
 
         return $this;
     }

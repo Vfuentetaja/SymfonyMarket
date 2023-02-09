@@ -30,9 +30,11 @@ function printmsg() {
   // to generated captcha or not
   if (usr_input == captcha.innerHTML && usr_input !="") {
     var s = (document.getElementById("key").innerHTML = "Matched");
-    generate();
+    if(s) {
+      document.getElementById("btn_submit").disabled = false;
+    }
   } else {
     var s = (document.getElementById("key").innerHTML = "not Matched" /*style=' color: red'*/);
-    generate();
+    
   }
 }
