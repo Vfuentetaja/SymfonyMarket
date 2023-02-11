@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <th>Id</th>
-                <td class="registro">{{ producto.id }}</td>
+                <td class="registro" id="productoId">{{ producto.id }}</td>
             </tr>
             <tr>
                 <th>Nombre</th>
@@ -70,12 +70,13 @@
         <textarea id="inputTexto" name="texto" rows="5" cols="33" required autofocus></textarea>
     	<input type="submit" value="Enviar" id="enviarPregunta" class="btn btn-primary">
     </form>
+    <div id="listadoPreguntas"></div>
     {% endif %}
 
 {% endblock %}
 
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
-    <script type="text/javascript" src="{{ asset('js/carrito.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ asset('js/preguntas.js') }}"></script>
 {% endblock %}

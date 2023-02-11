@@ -1,26 +1,25 @@
-
 $(document).ready(function(){
     cargarPreguntas();
 
     $(document).on('click','.botonRespuestas', function (event) {
         event.preventDefault();
         var id=$(this).attr('id');
-        $.getJSON('/respuesta/'+$(this).attr('id'),null,function(respuestas){
+        $.getJSON('/respuesta/usuario/'+id,null,function(respuestas){
             //console.log(respuestas);
             let codigo="";
-            codigo+="LISTA DE RESPUESTAS";
+            codigo+="LISTA DE RESPUESTAS<br/>";
             for(let i=0;i<respuestas.length;i++){       
                 codigo+="<p>"+formatDate(respuestas[i].fecha)+"</p>";
                 codigo+="<p>"+respuestas[i].nombreAutor+"</p>";
                 codigo+="<p>"+respuestas[i].texto+"</p>";   
             }
-            codigo+="FIN DE LA LISTA DE RESPUESTAS";
+            codigo+="<br/>FIN DE LA LISTA DE RESPUESTAS";
             $("#bloqueRespuestas"+id).html(codigo);
         });
     });
 
     function cargarPreguntas(){
-        $.getJSON("/pregunta/",null,function(preguntas){
+        $.getJSON("/pregunta/usuario",null,function(preguntas){
             let codigo="";
             for(let i=0;i<preguntas.length;i++){
                 codigo+="<div class='bloquePregunta'>";
@@ -47,12 +46,3 @@ $(document).ready(function(){
     } 
 
 });
-
-
-
-
-
-
-
-
- 

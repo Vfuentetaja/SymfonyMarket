@@ -27,6 +27,9 @@ class Respuesta
     #[ORM\JoinColumn(nullable: false)]
     private ?Pregunta $pregunta = null;
 
+    #[ORM\ManyToOne(inversedBy: 'respuestas')]
+    private ?User $User = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Respuesta
     public function setPregunta(?Pregunta $pregunta): self
     {
         $this->pregunta = $pregunta;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): self
+    {
+        $this->User = $User;
 
         return $this;
     }

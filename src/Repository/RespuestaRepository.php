@@ -39,6 +39,18 @@ class RespuestaRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByIdPregunta($value): array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.pregunta = :name')
+            ->setParameter('name', $value)
+            ->orderBy('r.fecha', 'DESC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Respuesta[] Returns an array of Respuesta objects
 //     */
