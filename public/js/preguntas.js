@@ -22,6 +22,11 @@ $(document).ready(function(){
                 codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
                 codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                 codigo+="</form>";
+
+/*                 codigo+="<form method='post' class='actualizarPregunta'>";
+                codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
+                codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
+                codigo+="</form>"; */
                 codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntaRecuperada.id+`/edit">Actualizar pregunta</a>`;
             }
             codigo+="<button type='button' class='botonRespuestas' id='"+preguntaRecuperada.id+"'>Ver respuestas</button>";
@@ -50,7 +55,13 @@ $(document).ready(function(){
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestasRecuperadas[i].pregunta.id+"'>";
                     codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestasRecuperadas[i].id+`/edit">Actualizar respuesta</a>`; 
+                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    codigo+="<input type='hidden' name='idRespuesta' value='"+respuestasRecuperadas[i].id+"'>";
+                    codigo+="<input type='text' name='textoRespuesta' value=''>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+respuestasRecuperadas[i].pregunta.id+"'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="</form>";
+                    //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestasRecuperadas[i].id+`/edit">Actualizar respuesta</a>`; 
                 } 
             }
             $("#bloqueRespuestas"+id).html(codigo);
@@ -74,10 +85,48 @@ $(document).ready(function(){
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
                     codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
+
+                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
+                    codigo+="<input type='text' name='textoRespuesta' value=''>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="</form>";
+                    //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
                 }  
             }
             $("#bloqueRespuestas"+id).html(codigo);
+        });
+    });
+
+    $(document).on('submit','.actualizarRespuesta', function (event) {
+        event.preventDefault();
+        var inputs= $(this).find("input");
+        var idRespuesta=inputs[0].value;
+        var idPregunta=inputs[2].value;
+        let respuestaActualizada=$(this).serialize();
+        $.post("/respuesta/edit/"+idRespuesta,respuestaActualizada,function(respuestas){
+            let codigo="";
+            for(let i=0;i<respuestas.length;i++){       
+                codigo+="<p>"+formatDate(respuestas[i].fecha)+"</p>";
+                codigo+="<p>"+respuestas[i].nombreAutor+"</p>";
+                codigo+="<p>"+respuestas[i].texto+"</p>"; 
+                if(respuestas[i].User.id== sessionStorage.getItem("id")){
+                    codigo+="<form method='post' class='borrarRespuesta'>";
+                    codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
+                    codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
+                    codigo+="</form>";
+                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
+                    codigo+="<input type='text' name='textoRespuesta' value=''>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="</form>";
+                    //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
+                }
+            } 
+            $("#bloqueRespuestas"+idPregunta).html(codigo);
         });
     });
 
@@ -98,7 +147,13 @@ $(document).ready(function(){
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
                     codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
+                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
+                    codigo+="<input type='text' name='textoRespuesta' value=''>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="</form>";
+                    //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
                 }  
             }
             $("#bloqueRespuestas"+idPregunta).html(codigo);

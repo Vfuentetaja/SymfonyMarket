@@ -82,10 +82,22 @@ class RespuestaController extends AbstractController
         ]);
     } */
 
-    #[Route('/{id}/edit', name: 'app_respuesta_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Respuesta $respuestum, RespuestaRepository $respuestaRepository): Response
+    #[Route('/edit/{id}', name: 'app_respuesta_edit', methods: ['GET', 'POST'],requirements:['id'=>'\d+'])]
+    public function edit(int $id, Request $request, Respuesta $respuestum, RespuestaRepository $respuestaRepository): Response
     {
-        $form = $this->createForm(RespuestaType::class, $respuestum);
+        $respuesta=$respuestaRepository->findOneById($id);
+        $texto=$_REQUEST['textoRespuesta'];
+        $respuesta->setTexto($texto);
+        $respuestaRepository->save($respuesta, true);
+        
+        $idPregunta=$_REQUEST['idPregunta'];
+        $recuperadas=$respuestaRepository->findByIdPregunta($idPregunta);
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $data = $serializer->normalize($recuperadas,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id'],'pregunta'=>['id']]]);
+        return new JsonResponse($data);
+        /* $form = $this->createForm(RespuestaType::class, $respuestum);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -97,7 +109,7 @@ class RespuestaController extends AbstractController
         return $this->renderForm('respuesta/edit.html.twig', [
             'respuestum' => $respuestum,
             'form' => $form,
-        ]);
+        ]); */
     }
 
     #[Route('/delete/{id}', name: 'app_respuesta_delete', methods: ['POST'],requirements:['id'=>'\d+'])]
