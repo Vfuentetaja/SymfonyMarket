@@ -23,11 +23,12 @@ $(document).ready(function(){
                 codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                 codigo+="</form>";
 
-/*                 codigo+="<form method='post' class='actualizarPregunta'>";
+                codigo+="<form method='post' class='actualizarPregunta'>";
                 codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
+                codigo+="<input type='text' name='textoPregunta' value=''>";
                 codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
-                codigo+="</form>"; */
-                codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntaRecuperada.id+`/edit">Actualizar pregunta</a>`;
+                codigo+="</form>"; 
+                //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntaRecuperada.id+`/edit">Actualizar pregunta</a>`;
             }
             codigo+="<button type='button' class='botonRespuestas' id='"+preguntaRecuperada.id+"'>Ver respuestas</button>";
             codigo+="<div id='bloqueRespuestas"+preguntaRecuperada.id+"'></div>";
@@ -35,6 +36,44 @@ $(document).ready(function(){
             codigo+=$('#listadoPreguntas').html();
             $('#listadoPreguntas').html(codigo);
             $('#inputTexto').val("");
+        });
+    });
+
+    $(document).on('submit','.actualizarPregunta', function (event) {
+        event.preventDefault();
+        let id=document.querySelector("#productoId").innerHTML;
+        let preguntaActualizada=$(this).serialize();
+        $.post("/pregunta/edit/"+id,preguntaActualizada,function(preguntas){
+            let codigo="";
+            for(let i=0;i<preguntas.length;i++){
+                codigo+="<div class='bloquePregunta'>";
+                codigo+="<p>"+formatDate(preguntas[i].fecha)+"</p>";
+                codigo+="<p>"+preguntas[i].nombreAutor+"</p>";
+                codigo+="<p>"+preguntas[i].texto+"</p>";
+                if(sessionStorage.getItem("id")){
+                    codigo+="<form method='post' class='enviarRespuesta' action='/respuesta/new'>";
+                    codigo+="<input type='text' name='textoRespuesta'/>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
+                    codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta btn btn-primary'>";
+                    codigo+="</form>";
+                }
+                if(preguntas[i].User.id== sessionStorage.getItem("id")){
+                    codigo+="<form method='post' class='borrarPregunta'>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
+                    codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
+                    codigo+="</form>";
+                    codigo+="<form method='post' class='actualizarPregunta'>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
+                    codigo+="<input type='text' name='textoPregunta' value=''>";
+                    codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
+                    codigo+="</form>"; 
+                    //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
+                }
+                codigo+="<button type='button' class='botonRespuestas' id='"+preguntas[i].id+"'>Ver respuestas</button>";
+                codigo+="<div id='bloqueRespuestas"+preguntas[i].id+"'></div>";
+                codigo+="</div>";
+            }
+            $('#listadoPreguntas').html(codigo);
         });
     });
 
@@ -184,7 +223,13 @@ $(document).ready(function(){
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
+
+                    codigo+="<form method='post' class='actualizarPregunta'>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
+                    codigo+="<input type='text' name='textoPregunta' value=''>";
+                    codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
+                    codigo+="</form>"; 
+                    //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
                 }
                 codigo+="<button type='button' class='botonRespuestas' id='"+preguntas[i].id+"'>Ver respuestas</button>";
                 codigo+="<div id='bloqueRespuestas"+preguntas[i].id+"'></div>";
@@ -215,7 +260,12 @@ $(document).ready(function(){
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
+                    codigo+="<form method='post' class='actualizarPregunta'>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
+                    codigo+="<input type='text' name='textoPregunta' value=''>";
+                    codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
+                    codigo+="</form>"; 
+                    //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
                 }
                 codigo+="<button type='button' class='botonRespuestas' id='"+preguntas[i].id+"'>Ver respuestas</button>";
                 codigo+="<div id='bloqueRespuestas"+preguntas[i].id+"'></div>";

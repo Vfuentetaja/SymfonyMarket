@@ -77,22 +77,40 @@ class PreguntaController extends AbstractController
         ]);
     } */
 
-    #[Route('/{id}/edit', name: 'app_pregunta_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Pregunta $preguntum, PreguntaRepository $preguntaRepository): Response
+    #[Route('/edit/{id}', name: 'app_pregunta_edit', methods: ['GET', 'POST'],requirements:['id'=>'\d+'])]
+    public function edit(int $id,Request $request, PreguntaRepository $preguntaRepository,ProductoRepository $productoRepository): Response
     {
-        $form = $this->createForm(PreguntaType::class, $preguntum);
-        $form->handleRequest($request);
+        $idPregunta=$_REQUEST['idPregunta'];
+        $textoPregunta=$_REQUEST['textoPregunta'];
+        $pregunta=$preguntaRepository->findOneById($idPregunta);
+        $pregunta->setTexto($textoPregunta);
+        $preguntaRepository->save($pregunta, true);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $preguntaRepository->save($preguntum, true);
+        $producto=$productoRepository->findOneById($id);
+        $pregunt= $preguntaRepository->findByProducto($producto);
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id']]]);
+        return new JsonResponse($data);
+    }
 
-            return $this->redirectToRoute('app_producto_show', ['id' => $preguntum->getProducto()->getId()], Response::HTTP_SEE_OTHER);
-        }
+    #[Route('/usuario/edit', name: 'app_pregunta_usuario_edit', methods: ['GET', 'POST'])]
+    public function editPreguntasUsuario(Request $request, PreguntaRepository $preguntaRepository,ProductoRepository $productoRepository): Response
+    {
+        $idPregunta=$_REQUEST['idPregunta'];
+        $textoPregunta=$_REQUEST['textoPregunta'];
+        $pregunta=$preguntaRepository->findOneById($idPregunta);
+        $pregunta->setTexto($textoPregunta);
+        $preguntaRepository->save($pregunta, true);
 
-        return $this->renderForm('pregunta/edit.html.twig', [
-            'preguntum' => $preguntum,
-            'form' => $form,
-        ]);
+        $pregunt= $preguntaRepository->findByUser($this->getUser());
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id']]]);
+        return new JsonResponse($data);
+
     }
 
     #[Route('/delete/{id}', name: 'app_pregunta_delete', methods: ['POST'],requirements:['id'=>'\d+'])]
