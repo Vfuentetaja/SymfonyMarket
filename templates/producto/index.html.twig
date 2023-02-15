@@ -199,5 +199,11 @@
     {{ encore_entry_script_tags('app') }}
     <script type="text/javascript" src="{{ asset('js/sliders.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/carrito.js') }}"></script>
-
+    {% if app.user %}
+    <script>
+        if (window.sessionStorage) {
+            sessionStorage.setItem("id", {{app.user.id}});
+        }
+    </script>
+    {% endif %}
 {% endblock %}

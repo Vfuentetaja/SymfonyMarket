@@ -13,9 +13,9 @@ class RespuestaType extends AbstractType
     {
         $builder
             ->add('texto')
-            ->add('nombreAutor')
-            ->add('fecha')
-            ->add('pregunta')
+            //->add('nombreAutor')
+            //->add('fecha')
+            //->add('pregunta')
         ;
     }
 

@@ -31,7 +31,7 @@ class RespuestaController extends AbstractController
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
-        $data = $serializer->normalize($recuperadas,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha']]);
+        $data = $serializer->normalize($recuperadas,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id'],'pregunta'=>['id']]]);
         return new JsonResponse($data);
     }
 
@@ -43,7 +43,7 @@ class RespuestaController extends AbstractController
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
-        $data = $serializer->normalize($recuperadas,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha']]);
+        $data = $serializer->normalize($recuperadas,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id'],'pregunta'=>['id']]]);
         return new JsonResponse($data);
     }
 
@@ -63,30 +63,24 @@ class RespuestaController extends AbstractController
         $respuesta->setUser($this->getUser());
 
         $respuestaRepository->save($respuesta, true);
-        return $this->redirectToRoute('app_producto_show', ['id'=>$pregunta[0]->getProducto()->getId()], Response::HTTP_SEE_OTHER);
 
-        /* $form = $this->createForm(RespuestaType::class, $respuestum);
-        $form->handleRequest($request);
+        $recuperadas=$respuestaRepository->findByIdPregunta($idPregunta);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $respuestaRepository->save($respuestum, true);
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $data = $serializer->normalize($recuperadas,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id'],'pregunta'=>['id']]]);
+        return new JsonResponse($data);
 
-            return $this->redirectToRoute('app_respuesta_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('respuesta/new.html.twig', [
-            'respuestum' => $respuestum,
-            'form' => $form,
-        ]); */
     }
 
-    #[Route('/{id}', name: 'app_respuesta_show', methods: ['GET'])]
+/*     #[Route('/{id}', name: 'app_respuesta_show', methods: ['GET'])]
     public function show(Respuesta $respuestum): Response
     {
         return $this->render('respuesta/show.html.twig', [
             'respuestum' => $respuestum,
         ]);
-    }
+    } */
 
     #[Route('/{id}/edit', name: 'app_respuesta_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Respuesta $respuestum, RespuestaRepository $respuestaRepository): Response
@@ -95,9 +89,9 @@ class RespuestaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $respuestaRepository->save($respuestum, true);
+             $respuestaRepository->save($respuestum, true);
 
-            return $this->redirectToRoute('app_respuesta_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_producto_show', ['id' => $respuestum->getPregunta()->getProducto()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('respuesta/edit.html.twig', [
@@ -106,13 +100,18 @@ class RespuestaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_respuesta_delete', methods: ['POST'])]
-    public function delete(Request $request, Respuesta $respuestum, RespuestaRepository $respuestaRepository): Response
+    #[Route('/delete/{id}', name: 'app_respuesta_delete', methods: ['POST'],requirements:['id'=>'\d+'])]
+    public function delete(int $id,Request $request, Respuesta $respuestum, RespuestaRepository $respuestaRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$respuestum->getId(), $request->request->get('_token'))) {
-            $respuestaRepository->remove($respuestum, true);
-        }
+        $respuesta=$respuestaRepository->findOneById($id);
+        $pregunta=$respuesta->getPregunta();
+        $respuestaRepository->remove($respuesta, true);
+        $recuperadas=$respuestaRepository->findByIdPregunta($pregunta->getId());
 
-        return $this->redirectToRoute('app_respuesta_index', [], Response::HTTP_SEE_OTHER);
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $data = $serializer->normalize($recuperadas,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id'],'pregunta'=>['id']]]);
+        return new JsonResponse($data);
     }
 }

@@ -4,10 +4,8 @@
 
 {% block body %}
     <h1>Edit Respuesta</h1>
-
-    {{ include('respuesta/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_respuesta_index') }}">back to list</a>
-
-    {{ include('respuesta/_delete_form.html.twig') }}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">{{ button_label|default('Guardar') }}</button>
+    {{ form_end(form) }}
 {% endblock %}

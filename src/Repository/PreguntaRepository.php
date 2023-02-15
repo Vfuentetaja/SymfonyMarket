@@ -38,12 +38,37 @@ class PreguntaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findByProducto($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->Where('p.producto = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.fecha', 'DESC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findByUser($value): array
     {
         return $this->createQueryBuilder('p')
             ->Where('p.User = :val')
             ->setParameter('val', $value)
             ->orderBy('p.fecha', 'DESC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findOneByFecha($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->Where('p.fecha = :val')
+            ->setParameter('val', $value)
+            //->orderBy('p.fecha', 'DESC')
             //->setMaxResults(10)
             ->getQuery()
             ->getResult()

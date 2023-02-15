@@ -22,14 +22,15 @@ use Symfony\Component\Serializer\Serializer;
 #[Route('/pregunta')]
 class PreguntaController extends AbstractController
 {
-    #[Route('/', name: 'app_pregunta_index', methods: ['GET'])]
-    public function index(PreguntaRepository $preguntaRepository): Response
+    #[Route('/{id}', name: 'app_pregunta_index', methods: ['GET'],requirements:['id'=>'\d+'])]
+    public function index(int $id,PreguntaRepository $preguntaRepository,ProductoRepository $productoRepository): Response
     {
-        $pregunt= $preguntaRepository->findAll();
+        $producto=$productoRepository->findOneById($id);
+        $pregunt= $preguntaRepository->findByProducto($producto);
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
-        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha']]);
+        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id']]]);
         return new JsonResponse($data);
     }
 
@@ -40,7 +41,7 @@ class PreguntaController extends AbstractController
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
-        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha']]);
+        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id']]]);
         return new JsonResponse($data);
     }
 
@@ -60,67 +61,21 @@ class PreguntaController extends AbstractController
         $pregunta->setTexto($textoPregunta);
         $preguntaRepository->save($pregunta, true);
 
-        return $this->redirectToRoute('app_producto_show', ['id'=>$id], Response::HTTP_SEE_OTHER);
-
-        //$textoPregunta = $request->request->get('texto', '');
-        
-        //$pregunt= $preguntaRepository->findById(3);
-        //$pregunt= $preguntaRepository->findAll();
-        //dd(gettype($pregunt[0]));
-
-        /* $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
+        $pregunta1= $preguntaRepository->findOneByFecha($pregunta->getFecha());
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
-        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor']]);
-        return new JsonResponse($data); */
-        
-
-        /* $pregunt= $preguntaRepository->findById(3);
-        dd($pregunt); */
-        //$texto= "xxxx";
-        //echo $texto;
-        //echo json_encode($preguntas);
-        //return $preguntas;
-        
-
-        //new JsonResponse, which firstly looking for the serializer in your container. So you have at least two options
-        //Install Symfony or JMS serializer, it will simplify your life
-        
-        //return new JsonResponse(['pregunt' => $pregunt]);
-        //return $this->json($pregunt);
-        
-
-        //return new JsonResponse::fromJsonString($serializer->serialize($pregunt, 'json'));
-        //$encoder = new JsonEncoder();
-        /* $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
-        $data = $serializer->normalize($pregunt[0],null,[AbstractNormalizer::ATTRIBUTES => ['id','texto']]);
-        dd($data);  */
-        //return new JsonResponse($data);
-        //, null, [AbstractNormalizer::ATTRIBUTES => ['familyName', 'company' => ['name']]]
-        //$data = $serializer->serialize($pregunt, 'json');
-        //dd($data);
-        
-        //return new Response($pregunt);
-        /* $pregunt = $serializer->serialize($preguntaRepository->findById(3), 'json');
-        $response = new Response(
-            $pregunt,
-            Response::HTTP_OK,
-            ['Content-type' => 'application/json']
-         );
-        return $response;   */
-        //return new JsonResponse($serializer->serialize($pregunt, 'json'));
-        //return new JsonResponse(['pregunt' => $pregunt]);
+        $data = $serializer->normalize($pregunta1[0],'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id']]]);
+        return new JsonResponse($data);
     }
 
-    #[Route('/{id}', name: 'app_pregunta_show', methods: ['GET'])]
+/*     #[Route('/{id}', name: 'app_pregunta_show', methods: ['GET'])]
     public function show(Pregunta $preguntum): Response
     {
         return $this->render('pregunta/show.html.twig', [
             'preguntum' => $preguntum,
         ]);
-    }
+    } */
 
     #[Route('/{id}/edit', name: 'app_pregunta_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Pregunta $preguntum, PreguntaRepository $preguntaRepository): Response
@@ -131,7 +86,7 @@ class PreguntaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $preguntaRepository->save($preguntum, true);
 
-            return $this->redirectToRoute('app_pregunta_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_producto_show', ['id' => $preguntum->getProducto()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('pregunta/edit.html.twig', [
@@ -140,13 +95,34 @@ class PreguntaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_pregunta_delete', methods: ['POST'])]
-    public function delete(Request $request, Pregunta $preguntum, PreguntaRepository $preguntaRepository): Response
+    #[Route('/delete/{id}', name: 'app_pregunta_delete', methods: ['POST'],requirements:['id'=>'\d+'])]
+    public function delete(int $id,Request $request, Pregunta $preguntum, PreguntaRepository $preguntaRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$preguntum->getId(), $request->request->get('_token'))) {
-            $preguntaRepository->remove($preguntum, true);
-        }
+        $pregunta=$preguntaRepository->findOneById($id);
+        $producto=$pregunta->getProducto();
+       
+        $preguntaRepository->remove($pregunta, true);
+        
+        $pregunt= $preguntaRepository->findByProducto($producto);
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id']]]);
+        return new JsonResponse($data);
+    }
 
-        return $this->redirectToRoute('app_pregunta_index', [], Response::HTTP_SEE_OTHER);
+    #[Route('/delete/usuario/{id}', name: 'app_pregunta_delete_usuario', methods: ['POST'],requirements:['id'=>'\d+'])]
+    public function deletePreguntasUsuario(int $id,Request $request, Pregunta $preguntum, PreguntaRepository $preguntaRepository): Response
+    {
+        $pregunta=$preguntaRepository->findOneById($id);
+       
+        $preguntaRepository->remove($pregunta, true);
+        
+        $pregunt= $preguntaRepository->findByUser($this->getUser());
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $data = $serializer->normalize($pregunt,'json',[AbstractNormalizer::ATTRIBUTES => ['id','texto','nombreAutor','fecha','User'=>['id']]]);
+        return new JsonResponse($data);
     }
 }

@@ -51,6 +51,18 @@ class RespuestaRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findOneByFecha($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->Where('p.fecha = :val')
+            ->setParameter('val', $value)
+            //->orderBy('p.fecha', 'DESC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Respuesta[] Returns an array of Respuesta objects
 //     */
