@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Producto{% endblock %}
+
+{% block body %}
+    <h1>Producto</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td class="registro">{{ producto.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td class="productoNombre registro" id="productoNombre">{{ producto.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Precio</th>
+                <td id="productoPrecio"class="productoPrecio registro">{{ producto.precio }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td class="registro">{{ producto.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Cantidad</th>
+                <td id="productoCantidad" class="productoCantidad registro">{{ producto.cantidad }}</td>
+            </tr>
+            <tr>
+                <th>Categoria</th>
+                <td class="registro">{{ producto.categoria }}</td>
+            </tr>
+            <tr>
+                <th>Imagen</th>
+                {% if producto.imagen %}
+		        <td><img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="mini-imagen productoImagen"/></td>
+                {% else %}
+                <td><img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" class="mini-imagen productoImagen"/></td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th>Destacado</th>
+                <td class="registro">{{ producto.destacado ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Oferta</th>
+                <td class="registro">{{ producto.oferta ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Novedad</th>
+                <td class="registro">{{ producto.novedad ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_producto_index') }}">Volver a la lista</a>
+    {% if is_granted('ROLE_ADMIN')%}
+        <a class="btn btn-warning" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>
+    {% endif %}
+    {% if app.user %}
+<button class="btn btn-success addToCart" >Añadir al carrito</button>
+    {% endif %}
+{% endblock %}

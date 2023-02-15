@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<div class="modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header border-bottom-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=cerrarVentana()>
+          <span aria-hidden="true">Cerrar</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-title text-center">
+          <h4>Por favor introduce tus datos</h4>
+        </div>
+        <div class="d-flex flex-column text-center">
+        {# esto se manda al LoginFormAuthenticator #}
+          <form method="post">
+
+            <div class="form-group">
+              <label for="inputEmail">Email</label>
+    	      <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+            </div>
+
+            <div class="form-group">
+              <label for="inputPassword">Password</label>
+    	      <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            </div>
+	        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> </br>
+
+          <div id="user-input-captcha" class="inline">
+            <input type="text" id="submit" placeholder="Captcha code" />
+          </div>
+          <button id="btn-login" ><img src="{{ asset('images/' ~ 'reintentar.webp') }}" class="mini-btn" alt="Recargar"></button>
+          <div class="inline" onclick="generate()">
+            <i class="fas fa-sync"></i>
+          </div>
+
+              <div id="image" class="inline" selectable="False">
+              </div>
+              <p id="key"></p>
+              <p id="aceptar"><input type="checkbox" onclick="printmsg()"> No soy un robot</p></br>
+
+            <button id="btn_submit" type="submit" class="btn btn-lg btn-primary btn-round" disabled>Enviar</button>
+
+            <div class="text-center text-muted delimiter">
+		{% if error %}
+        	  <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    		{% endif %}
+
+    		{% if app.user %}
+        	  <div class="mb-3">Ya hay una sesion iniciada con {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a></div>
+	        {% endif %}
+	    </div>
+          </form>
+          <a class="nav-link" href="{{path('app_forgot_password_request')}}">¿Has olvidado tu password?</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('js/captcha.js') }}"></script>
+    <script>
+        window.addEventListener("load",function(){
+            var login = document.getElementById("loginModal");
+            login.style.display = "block";
+
+        });
+        function cerrarVentana(){
+           document.getElementById("loginModal").style.display = "none";
+        }
+    </script>
+{% endblock %}

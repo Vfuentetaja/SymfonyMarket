@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pedido{% endblock %}
+
+{% block body %}
+    <h1>Detalles pedido</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id del pedido</th>
+                <td class="registro">{{ pedido.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_pedido</th>
+                <td class="registro">{{ pedido.fechaPedido ? pedido.fechaPedido|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Nombre del destinatario</th>
+                <td class="registro">{{ pedido.destinatario}}</td>
+            </tr>
+            <tr>
+                <th>Direccion del destinatario</th>
+                <td class="registro">{{ pedido.direccionDestinatario }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul id="listaItems">
+    {% for item in pedido.items %}
+        <li class="registro">{{item.producto.nombre}}:  {{item.producto.precio}}.  Cantidad:{{item.cantidad}}  {{ include('item/_delete_form.html.twig') }}</li>
+    {% endfor %}
+        <li class="registro">TOTAL: {{total}}</li>
+    </ul>
+    {% if is_granted('ROLE_ADMIN')%}
+        <a class="btn btn-primary" href="{{path('app_pedido_index_all')}}">Volver a la lista de pedidos</a>
+    {% else %}
+        <a class="btn btn-success" href="{{path('app_pedido_pago', {'id': pedido.id})}}" onclick="vaciarCarro()">Pagar</a>
+        <a class="btn btn-primary" href="{{path('app_pedido_index', {'id': app.user.id}) }}">Volver a la lista de pedidos</a>
+    {% endif %}
+    
+
+    {# <a href="{{ path('app_pedido_edit', {'id': pedido.id}) }}">edit</a> #}
+
+    {# {{ include('pedido/_delete_form.html.twig') }} #}
+{% endblock %}
