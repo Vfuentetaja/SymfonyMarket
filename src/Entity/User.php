@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -11,8 +12,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AppAssert; //cargamos los ficheros del validador propio que hemos creado para aplciarlo sobre la clase en la que queremos usarlo
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Ya hay una cuenta de correo con este email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,6 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\Email(message: 'El email {{ value }} no es valido.',)]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -33,12 +38,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message:'El campo nombre no puede estar vacio.',)]
+    #[Assert\Length(min: 2, max: 12,
+        minMessage: 'Tu nombre debe tener mas de {{ limit }} letras, ahora tiene {{ value }}.',
+        maxMessage: 'Tu nombre no puede tener mas de {{ limit }} letras, ahora tiene {{ value }}.',
+    )]
+
+    #[AppAssert\NombreUsuarioUnico] //como en "NombreUsuarioUnico" asignamos la validacion como 
+                                    //"PROPERTY_CONSTRAINT", la tenemos que aplicar sobre el atributo concreto
     private ?string $nombre = null;
 
     #[ORM\Column(length: 500, nullable: true)]
+    #[Assert\NotBlank(message:'El campo apellidos no puede estar vacio.',)]
+    #[Assert\Length(max: 15, maxMessage: 'Tu apellido no puede tener mas de {{ limit }} letras, ahora tiene {{ value }}',)]
     private ?string $apellidos = null;
 
     #[ORM\Column(length: 600, nullable: true)]
+    #[Assert\NotBlank(message:'El campo direccion no puede estar vacio.',)]
     private ?string $direccion = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

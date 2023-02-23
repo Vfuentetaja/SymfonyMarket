@@ -28,7 +28,8 @@ class LocaleSubscriber implements EventSubscriberInterface
             $request->getSession()->set('_locale', $locale);
         }else{
             //Si el objeto "request" no tiene un atributo "_locale", usamos el valor almacenado en la session para
-            //que tenga dicho atributo "_locale". 
+            //y lo ponemos como valor de dicho atributo "_locale". 
+            //El defaultLocale es el valor que se retorna si no existe un "_locale" en session
             $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
         }
 

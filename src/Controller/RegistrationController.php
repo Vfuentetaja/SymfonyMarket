@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +18,7 @@ class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, 
-    EntityManagerInterface $entityManager): Response
+    EntityManagerInterface $entityManager,UserRepository $userRepository): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -31,11 +33,20 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
+            //$userRepository->save($user,true);
 
+            // do anything else you need here, like send an email   
+        }
+
+        $errores=$userRepository->validar($user);
+        if (empty($errores)){
+            $userRepository->save($user,true);
             return $this->redirectToRoute('app_producto_index');
+        }else{
+            foreach ($errores as $error){
+                $this->addFlash('warning', $error->getMessage());
+            }
+
         }
 
         return $this->render('registration/register.html.twig', [

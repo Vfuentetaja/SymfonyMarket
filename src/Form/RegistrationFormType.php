@@ -22,6 +22,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'label' => 'Nombre',
+                'error_bubbling' => true,
                 'attr' => [
                     'autocomplete' => 'nombre',                     
                     'class' => 'input_formulario_registro',
@@ -30,6 +31,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('apellidos', TextType::class, [
                 'label' => 'Apellidos',
+                'error_bubbling' => true,
                 'attr' => [
                     'autocomplete' => 'apellidos',                     
                     'class' => 'input_formulario_registro',
@@ -38,6 +40,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('email', TextType::class, [
                 'label' => 'Email',
+                'error_bubbling' => true,
                 'attr' => [
                     'autocomplete' => 'email',                     
                     'class' => 'input_formulario_registro',
@@ -50,6 +53,7 @@ class RegistrationFormType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options'  => ['label' => 'Password', 'hash_property_path' => 'password'],
                 'second_options' => ['label' => 'Repita su password'],
+                'error_bubbling' => true,
                 'invalid_message'=>'Las passwords deben ser iguales.',
                 'mapped' => false,
                 'attr' => [
@@ -71,6 +75,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('direccion', TextType::class, [
                 'label' => 'Direccion',
+                'error_bubbling' => true,
                 'attr' => [
                     'autocomplete' => 'direccion',                     
                     'class' => 'input_formulario_registro',

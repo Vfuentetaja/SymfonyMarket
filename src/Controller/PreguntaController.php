@@ -37,7 +37,11 @@ class PreguntaController extends AbstractController
     #[Route('/usuario', name: 'app_pregunta_usuario_index', methods: ['GET'])]
     public function indexPreguntasUsuario(PreguntaRepository $preguntaRepository): Response
     {
-        $pregunt= $preguntaRepository->findByUser($this->getUser());
+        if(in_array("ROLE_ADMIN",$this->getUser()->getRoles())){
+            $pregunt= $preguntaRepository->findAll();
+        }else{
+            $pregunt= $preguntaRepository->findByUser($this->getUser());
+        }
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new DateTimeNormalizer(),new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);

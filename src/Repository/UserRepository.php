@@ -9,6 +9,9 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 /**
  * @extends ServiceEntityRepository<User>
  *
@@ -19,9 +22,10 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, ValidatorInterface $validatorInterface1)
     {
         parent::__construct($registry, User::class);
+        $this->validator=$validatorInterface1;
     }
 
     public function save(User $entity, bool $flush = false): void
@@ -54,6 +58,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
 
         $this->save($user, true);
+    }
+
+    public function findOneByNombre($value):?User{
+        return $this->createQueryBuilder('u')
+                    ->Where('u.nombre = :val')
+                    ->setParameter('val', $value)
+                    ->getQuery()
+                    ->getOneOrNullResult()
+               ;
+    }
+
+    public function validar(User $user): ConstraintViolationList
+    {
+        $errores = $this->validator->validate($user);
+        return $errores;
     }
 
 //    /**

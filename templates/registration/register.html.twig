@@ -36,11 +36,23 @@
         <div class="container contenedor">
             <div class="row">
                 <div class="col-xs-12">
-	              {{ form_start(registrationForm) }}
+                {# {% for type, messages in app.session.flashbag.all %}
+                  {% for message in messages %}
+                    <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+	              {% endfor %} #} {# como la password tiene una validacion hecha a nivel de formulario y no
+                de objeto, no aparece un message con el error que salta cuando no metemos una password#}
+
+	              {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }} {#le decimos que no me haga la validacion HTML#}
                     {{ form_widget(registrationForm) }}
                     <button type="submit" class="btn btn-primary">Registrarse</button>
-                  {{ form_end(registrationForm) }}
-                  <a class="btn btn-primary" href="#" onclick="consultarCondiciones()">Lee nuestras condiciones</a>
+                    <a class="btn btn-primary" href="#" onclick="consultarCondiciones()">Lee nuestras condiciones</a>
+                {{ form_end(registrationForm) }}
+                    
+
+                  
                 </div>
             </div>
         </div>
