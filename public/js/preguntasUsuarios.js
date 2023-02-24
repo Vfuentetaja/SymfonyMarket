@@ -15,7 +15,7 @@ $(document).ready(function(){
                 codigo+="<p>"+formatDate(respuestasRecuperadas[i].fecha)+"</p>";
                 codigo+="<p>"+respuestasRecuperadas[i].nombreAutor+"</p>";
                 codigo+="<p>"+respuestasRecuperadas[i].texto+"</p>"; 
-                if(respuestasRecuperadas[i].User.id== sessionStorage.getItem("id")  || "ROLE_ADMIN"== sessionStorage.getItem("role") ){
+                if(respuestasRecuperadas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarRespuesta'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestasRecuperadas[i].id+"'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestasRecuperadas[i].pregunta.id+"'>";
@@ -96,7 +96,7 @@ $(document).ready(function(){
                 codigo+="<p>"+formatDate(respuestas[i].fecha)+"</p>";
                 codigo+="<p>"+respuestas[i].nombreAutor+"</p>";
                 codigo+="<p>"+respuestas[i].texto+"</p>"; 
-                if(respuestas[i].User.id== sessionStorage.getItem("id")  || "ROLE_ADMIN"== sessionStorage.getItem("role") ){
+                if(respuestas[i].User.id== sessionStorage.getItem("id")  || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarRespuesta'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
@@ -174,7 +174,7 @@ $(document).ready(function(){
                 codigo+="</form>";
                 codigo+="</div>";
                 }
-                if(preguntas[i].User.id== sessionStorage.getItem("id") || "ROLE_ADMIN"== sessionStorage.getItem("role") ){
+                if(preguntas[i].User.id== sessionStorage.getItem("id")  || "ROLE_ADMIN"== sessionStorage.getItem("role") ){
                     codigo+="<form method='post' class='borrarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
@@ -222,7 +222,7 @@ $(document).ready(function(){
                 codigo+="</form>";
                 codigo+="</div>";
                 }
-                if(preguntas[i].User.id== sessionStorage.getItem("id") || "ROLE_ADMIN"== sessionStorage.getItem("role") ){
+                if(preguntas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
@@ -248,7 +248,9 @@ $(document).ready(function(){
     });
 
     function cargarPreguntas(){
-        $.getJSON("/pregunta/usuario",null,function(preguntas){
+        let Usuarios=document.querySelector(".registro").innerHTML;
+        idUsuario=Usuarios[0];
+        $.getJSON("/pregunta/usuario/"+idUsuario,null,function(preguntas){
             let codigo="";
             for(let i=0;i<preguntas.length;i++){
                 
@@ -266,7 +268,8 @@ $(document).ready(function(){
                 codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta btn btn-primary' onclick=esc3('"+preguntas[i].id+"')>";
                 codigo+="</form>";
                 codigo+="</div>";
-                if(preguntas[i].User.id== sessionStorage.getItem("id")  || "ROLE_ADMIN"== sessionStorage.getItem("role") ){
+                if(preguntas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("roles")){
+                    
                     codigo+="<form method='post' class='borrarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
@@ -287,6 +290,8 @@ $(document).ready(function(){
                 codigo+="</div>";
                 codigo+="</div>";
 
+            }if(preguntas.length<1){
+                codigo+="<div>Este usuario no ha realizado ninguna pregunta</div>";
             }
             $('#listadoPreguntas').html(codigo); 
         });

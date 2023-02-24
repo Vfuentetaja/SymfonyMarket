@@ -192,6 +192,7 @@
     <span class="boton_lista_index">
         <a href="{{ path('app_producto_search_all') }}" class="btn btn-warning">Ver lista completa</a>
     </span>
+    {# <p>Roles: {{dump(app.user.roles[0])}}</p> #}
 
 {% endblock %}
 
@@ -203,6 +204,8 @@
     <script>
         if (window.sessionStorage) {
             sessionStorage.setItem("id", {{app.user.id}});
+            sessionStorage.setItem("roles", '{{app.user.roles[0]}}');
+            //sessionStorage.setItem("roles", "ROLE_ADMIN");
         }
     </script>
     {% endif %}

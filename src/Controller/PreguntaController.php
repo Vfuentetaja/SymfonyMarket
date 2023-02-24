@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Pregunta;
 use App\Form\PreguntaType;
 use App\Repository\PreguntaRepository;
+use App\Repository\UserRepository;
 use App\Repository\ProductoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,11 +35,12 @@ class PreguntaController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/usuario', name: 'app_pregunta_usuario_index', methods: ['GET'])]
-    public function indexPreguntasUsuario(PreguntaRepository $preguntaRepository): Response
+    #[Route('/usuario/{id}', name: 'app_pregunta_usuario_index', methods: ['GET'],requirements:['id'=>'\d+'])]
+    public function indexPreguntasUsuario(int $id, PreguntaRepository $preguntaRepository, UserRepository $userRepository ): Response
     {
         if(in_array("ROLE_ADMIN",$this->getUser()->getRoles())){
-            $pregunt= $preguntaRepository->findAll();
+            $user = $userRepository->findOneById($id);
+            $pregunt= $preguntaRepository->findByUser($user);
         }else{
             $pregunt= $preguntaRepository->findByUser($this->getUser());
         }

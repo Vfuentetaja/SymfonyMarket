@@ -8,30 +8,46 @@ $(document).ready(function(){
         let preguntaEnviada=$("#formularioPregunta").serialize();
         $.post("/pregunta/new/"+id,preguntaEnviada,function(preguntaRecuperada){
             let codigo="";
-            codigo+="<div class='bloquePregunta'>";
+            codigo+="<div class=' text-center'>";
+            codigo+="<div class='bloquePregunta card' style='width: 40vw; margin-left: 25vw;'>";
             codigo+="<p>"+formatDate(preguntaRecuperada.fecha)+"</p>";
             codigo+="<p>"+preguntaRecuperada.nombreAutor+"</p>";
-            codigo+="<p>"+preguntaRecuperada.texto+"</p>";
-            codigo+="<form method='post' class='enviarRespuesta' action='/respuesta/new'>";
-            codigo+="<input type='text' name='textoRespuesta' class='texto'/>";
-            codigo+="<input type='hidden' name='idPregunta' class='id' value='"+preguntaRecuperada.id+"'>";
-            codigo+="<input type='submit' value='Enviar respuesta' class='botonEnviarRespuesta btn btn-primary'>";
-            codigo+="</form>";
+            codigo+="<p style='background-color: #eaeaea96;'>"+preguntaRecuperada.texto+"</p>";
+            codigo+='<button class="btn btn-success mostrarForm" id="mFor'+preguntaRecuperada.id+'" onclick=esc2("'+preguntaRecuperada.id+'") >Responder</button>';
+                    codigo+="<div class='esc' style='display:none' id='esc2"+preguntaRecuperada.id+"' >"
+                    codigo+="<form method='post' class='enviarRespuesta' action='/respuesta/new'>";
+                    codigo+="<input type='text' name='textoRespuesta'/>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
+                    codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta' class='btn btn-primary' onclick=esc3('"+preguntaRecuperada.id+"')>";
+                    codigo+="</form>";
+                    codigo+="</div>";
             if(preguntaRecuperada.User.id== sessionStorage.getItem("id")){
                 codigo+="<form method='post' class='borrarPregunta'>";
                 codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
                 codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                 codigo+="</form>";
 
-                codigo+="<form method='post' class='actualizarPregunta'>";
-                codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
-                codigo+="<input type='text' name='textoPregunta' value=''>";
-                codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
-                codigo+="</form>"; 
+
+
+                codigo+='<button class="btn btn-success mostrarForm" id="mForm'+preguntaRecuperada.id+'" onclick=esc("'+preguntaRecuperada.id+'") >Editar pregunta</button>';
+                    codigo+="<div class='esc' style='display:none' id='esc"+preguntaRecuperada.id+"' >"
+                    codigo+="<form method='post' class='actualizarPregunta'>";
+                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
+                    codigo+="<input type='text' name='textoPregunta' value=''>";
+                    codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
+                    codigo+="</form>"; 
+                    codigo+="</div>";
+
+                // codigo+="<form method='post' class='actualizarPregunta'>";
+                // codigo+="<input type='hidden' name='idPregunta' value='"+preguntaRecuperada.id+"'>";
+                // codigo+="<input type='text' name='textoPregunta' value=''>";
+                // codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
+                // codigo+="</form>"; 
                 //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntaRecuperada.id+`/edit">Actualizar pregunta</a>`;
             }
             codigo+="<button type='button' class='botonRespuestas' id='"+preguntaRecuperada.id+"'>Ver respuestas</button>";
             codigo+="<div id='bloqueRespuestas"+preguntaRecuperada.id+"'></div>";
+            codigo+="</div>";
             codigo+="</div>";
             codigo+=$('#listadoPreguntas').html();
             $('#listadoPreguntas').html(codigo);
@@ -46,31 +62,40 @@ $(document).ready(function(){
         $.post("/pregunta/edit/"+id,preguntaActualizada,function(preguntas){
             let codigo="";
             for(let i=0;i<preguntas.length;i++){
-                codigo+="<div class='bloquePregunta'>";
+                codigo+="<div class=' text-center'>";
+                codigo+="<div class='bloquePregunta card' style='width: 40vw; margin-left: 25vw;'>";
                 codigo+="<p>"+formatDate(preguntas[i].fecha)+"</p>";
                 codigo+="<p>"+preguntas[i].nombreAutor+"</p>";
-                codigo+="<p>"+preguntas[i].texto+"</p>";
+                codigo+="<p style='background-color: #eaeaea96;'>"+preguntas[i].texto+"</p>";
                 if(sessionStorage.getItem("id")){
+                    codigo+='<button class="btn btn-success mostrarForm" id="mFor'+preguntas[i].id+'" onclick=esc2("'+preguntas[i].id+'") >Responder</button>';
+                    codigo+="<div class='esc' style='display:none' id='esc2"+preguntas[i].id+"' >"
                     codigo+="<form method='post' class='enviarRespuesta' action='/respuesta/new'>";
                     codigo+="<input type='text' name='textoRespuesta'/>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
-                    codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta btn btn-primary'>";
+                    codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta' class='btn btn-primary' onclick=esc3('"+preguntas[i].id+"')>";
                     codigo+="</form>";
+                    codigo+="</div>";
                 }
-                if(preguntas[i].User.id== sessionStorage.getItem("id")){
+                if(preguntas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                     codigo+="</form>";
+
+                    codigo+='<button class="btn btn-success mostrarForm" id="mForm'+preguntas[i].id+'" onclick=esc("'+preguntas[i].id+'") >Editar pregunta</button>';
+                    codigo+="<div class='esc' style='display:none' id='esc"+preguntas[i].id+"' >"
                     codigo+="<form method='post' class='actualizarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='text' name='textoPregunta' value=''>";
                     codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
                     codigo+="</form>"; 
+                    codigo+="</div>";
                     //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
                 }
                 codigo+="<button type='button' class='botonRespuestas' id='"+preguntas[i].id+"'>Ver respuestas</button>";
                 codigo+="<div id='bloqueRespuestas"+preguntas[i].id+"'></div>";
+                codigo+="</div>";
                 codigo+="</div>";
             }
             $('#listadoPreguntas').html(codigo);
@@ -88,18 +113,21 @@ $(document).ready(function(){
                 codigo+="<p>"+formatDate(respuestasRecuperadas[i].fecha)+"</p>";
                 codigo+="<p>"+respuestasRecuperadas[i].nombreAutor+"</p>";
                 codigo+="<p>"+respuestasRecuperadas[i].texto+"</p>"; 
-                if(respuestasRecuperadas[i].User.id== sessionStorage.getItem("id")){
+                if(respuestasRecuperadas[i].User.id== sessionStorage.getItem("id")  || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarRespuesta'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestasRecuperadas[i].id+"'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestasRecuperadas[i].pregunta.id+"'>";
                     codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    codigo+='<button class="btn btn-success mostrarForm" id="mostrarForm'+respuestasRecuperadas[i].id+'" onclick=muestra("'+respuestasRecuperadas[i].id+'") >Editar respuestas</button>';
+                    codigo+="<div class='esconder' style='display:none' id='esconder"+respuestasRecuperadas[i].id+"' >"
+                    codigo+="<form method='post' class='actualizarRespuesta' id='formularioRespuesta"+respuestasRecuperadas[i].id+"'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestasRecuperadas[i].id+"'>";
                     codigo+="<input type='text' name='textoRespuesta' value=''>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestasRecuperadas[i].pregunta.id+"'>";
-                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger' >";
                     codigo+="</form>";
+                    codigo+="</div>"
                     //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestasRecuperadas[i].id+`/edit">Actualizar respuesta</a>`; 
                 } 
             }
@@ -118,19 +146,23 @@ $(document).ready(function(){
                 codigo+="<p>"+formatDate(respuestas[i].fecha)+"</p>";
                 codigo+="<p>"+respuestas[i].nombreAutor+"</p>";
                 codigo+="<p>"+respuestas[i].texto+"</p>"; 
-                if(respuestas[i].User.id== sessionStorage.getItem("id")){
+                if(respuestas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarRespuesta'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
                     codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
                     codigo+="</form>";
-
-                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    
+                    //codigo+='<button class="btn btn-success mostrarForm" id="'+respuestas[i].id+'" >Editar respuestas</button>';
+                    codigo+='<button class="btn btn-success mostrarForm" id="mostrarForm'+respuestas[i].id+'" onclick=muestra("'+respuestas[i].id+'") >Editar respuestas</button>';
+                    codigo+="<div class='esconder' style='display:none' id='esconder"+respuestas[i].id+"' >"
+                    codigo+="<form method='post' class='actualizarRespuesta' id='formularioRespuesta"+respuestas[i].id+"'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
                     codigo+="<input type='text' name='textoRespuesta' value=''>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
-                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger' >";
                     codigo+="</form>";
+                    codigo+="</div>"
                     //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
                 }  
             }
@@ -150,18 +182,21 @@ $(document).ready(function(){
                 codigo+="<p>"+formatDate(respuestas[i].fecha)+"</p>";
                 codigo+="<p>"+respuestas[i].nombreAutor+"</p>";
                 codigo+="<p>"+respuestas[i].texto+"</p>"; 
-                if(respuestas[i].User.id== sessionStorage.getItem("id")){
+                if(respuestas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarRespuesta'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
                     codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    codigo+='<button class="btn btn-success mostrarForm" id="mostrarForm'+respuestas[i].id+'" onclick=muestra("'+respuestas[i].id+'") >Editar respuestas</button>';
+                    codigo+="<div class='esconder' style='display:none' id='esconder"+respuestas[i].id+"' >"
+                    codigo+="<form method='post' class='actualizarRespuesta' id='formularioRespuesta"+respuestas[i].id+"'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
                     codigo+="<input type='text' name='textoRespuesta' value=''>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
-                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger' >";
                     codigo+="</form>";
+                    codigo+="</div>"
                     //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
                 }
             } 
@@ -180,20 +215,24 @@ $(document).ready(function(){
                 codigo+="<p>"+formatDate(respuestas[i].fecha)+"</p>";
                 codigo+="<p>"+respuestas[i].nombreAutor+"</p>";
                 codigo+="<p>"+respuestas[i].texto+"</p>"; 
-                if(respuestas[i].User.id== sessionStorage.getItem("id")){
+                if(respuestas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarRespuesta'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
                     codigo+="<input type='submit' value='Borrar Respuesta' class='borrarRespuestaInput btn btn-danger'>";
                     codigo+="</form>";
-                    codigo+="<form method='post' class='actualizarRespuesta'>";
+                    codigo+='<button class="btn btn-success mostrarForm" id="mostrarForm'+respuestas[i].id+'" onclick=muestra("'+respuestas[i].id+'") >Editar respuestas</button>';
+                    codigo+="<div class='esconder' style='display:none' id='esconder"+respuestas[i].id+"' >"
+                    codigo+="<form method='post' class='actualizarRespuesta' id='formularioRespuesta"+respuestas[i].id+"'>";
                     codigo+="<input type='hidden' name='idRespuesta' value='"+respuestas[i].id+"'>";
                     codigo+="<input type='text' name='textoRespuesta' value=''>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+respuestas[i].pregunta.id+"'>";
-                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger'>";
+                    codigo+="<input type='submit' value='Actualizar Respuesta' class='actualizarRespuestaInput btn btn-danger' >";
                     codigo+="</form>";
+                    codigo+="</div>"
                     //codigo+=`<a class="btn btn-warning" href="/respuesta/`+respuestas[i].id+`/edit">Actualizar respuesta</a>`;
                 }  
+                
             }
             $("#bloqueRespuestas"+idPregunta).html(codigo);
               
@@ -207,32 +246,40 @@ $(document).ready(function(){
         $.post("/pregunta/delete/"+idPregunta,null,function(preguntas){
             let codigo="";
             for(let i=0;i<preguntas.length;i++){
-                codigo+="<div class='bloquePregunta'>";
+                codigo+="<div class='container text-center'>";
+                codigo+="<div class='bloquePregunta card' style='width: 40vw; margin-left: 25vw;'>";
                 codigo+="<p>"+formatDate(preguntas[i].fecha)+"</p>";
                 codigo+="<p>"+preguntas[i].nombreAutor+"</p>";
                 codigo+="<p>"+preguntas[i].texto+"</p>";
                 if(sessionStorage.getItem("id")){
-                    codigo+="<form method='post' class='enviarRespuesta' action='/respuesta/new'>";
-                    codigo+="<input type='text' name='textoRespuesta'/>";
-                    codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
-                    codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta btn btn-primary'>";
-                    codigo+="</form>";
+                codigo+='<button class="btn btn-success mostrarForm" id="mFor'+preguntas[i].id+'" onclick=esc2("'+preguntas[i].id+'") >Responder</button>';
+                codigo+="<div class='esc' style='display:none' id='esc2"+preguntas[i].id+"' >"
+                codigo+="<form method='post' class='enviarRespuesta' action='/respuesta/new'>";
+                codigo+="<input type='text' name='textoRespuesta'/>";
+                codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
+                codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta' class='btn btn-primary' onclick=esc3('"+preguntas[i].id+"')>";
+                codigo+="</form>";
+                codigo+="</div>";
                 }
-                if(preguntas[i].User.id== sessionStorage.getItem("id")){
+                if(preguntas[i].User.id== sessionStorage.getItem("id")  || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                     codigo+="</form>";
 
+                    codigo+='<button class="btn btn-success mostrarForm" id="mForm'+preguntas[i].id+'" onclick=esc("'+preguntas[i].id+'") >Editar pregunta</button>';
+                    codigo+="<div class='esc' style='display:none' id='esc"+preguntas[i].id+"' >"
                     codigo+="<form method='post' class='actualizarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='text' name='textoPregunta' value=''>";
                     codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
                     codigo+="</form>"; 
+                    codigo+="</div>";
                     //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
                 }
                 codigo+="<button type='button' class='botonRespuestas' id='"+preguntas[i].id+"'>Ver respuestas</button>";
                 codigo+="<div id='bloqueRespuestas"+preguntas[i].id+"'></div>";
+                codigo+="</div>";
                 codigo+="</div>";
             }
             $('#listadoPreguntas').html(codigo); 
@@ -244,32 +291,42 @@ $(document).ready(function(){
         $.getJSON("/pregunta/"+id,null,function(preguntas){
             let codigo="";
             for(let i=0;i<preguntas.length;i++){
-                codigo+="<div class='bloquePregunta'>";
+                codigo+="<div class=' text-center'>";
+                codigo+="<div class='bloquePregunta card' style='width: 40vw; margin-left: 25vw;'>";
                 codigo+="<p>"+formatDate(preguntas[i].fecha)+"</p>";
                 codigo+="<p>"+preguntas[i].nombreAutor+"</p>";
-                codigo+="<p>"+preguntas[i].texto+"</p>";
-                if(sessionStorage.getItem("id")){
+                codigo+="<p style='background-color: #eaeaea96;'>"+preguntas[i].texto+"</p>";
+                if(sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
+
+                    codigo+='<button class="btn btn-success mostrarForm" id="mFor'+preguntas[i].id+'" onclick=esc2("'+preguntas[i].id+'") >Responder</button>';
+                    codigo+="<div class='esc' style='display:none' id='esc2"+preguntas[i].id+"' >"
                     codigo+="<form method='post' class='enviarRespuesta' action='/respuesta/new'>";
                     codigo+="<input type='text' name='textoRespuesta'/>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Enviar respuesta' class='enviarRespuesta btn btn-primary'>";
                     codigo+="</form>";
+                    codigo+="</div>";
                 }
-                if(preguntas[i].User.id== sessionStorage.getItem("id")){
+                if(preguntas[i].User.id== sessionStorage.getItem("id")   || "ROLE_ADMIN"== sessionStorage.getItem("role")){
                     codigo+="<form method='post' class='borrarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='submit' value='Borrar pregunta' class='borrarPreguntaInput btn btn-danger'>";
                     codigo+="</form>";
+                    codigo+='<button class="btn btn-success mostrarForm" id="mForm'+preguntas[i].id+'" onclick=esc("'+preguntas[i].id+'") >Editar pregunta</button>';
+                    codigo+="<div class='esc' style='display:none' id='esc"+preguntas[i].id+"' >"
                     codigo+="<form method='post' class='actualizarPregunta'>";
                     codigo+="<input type='hidden' name='idPregunta' value='"+preguntas[i].id+"'>";
                     codigo+="<input type='text' name='textoPregunta' value=''>";
                     codigo+="<input type='submit' value='Actualizar pregunta' class='actualizarPreguntaInput btn btn-danger'>";
                     codigo+="</form>"; 
+                    codigo+="</div>";
                     //codigo+=`<a class="btn btn-warning" href="/pregunta/`+preguntas[i].id+`/edit">Actualizar pregunta</a>`;
                 }
                 codigo+="<button type='button' class='botonRespuestas' id='"+preguntas[i].id+"'>Ver respuestas</button>";
                 codigo+="<div id='bloqueRespuestas"+preguntas[i].id+"'></div>";
                 codigo+="</div>";
+            }if(preguntas.length<1){
+                codigo+="<div>No hay consultas para este producto</div>";
             }
             $('#listadoPreguntas').html(codigo); 
         });
@@ -283,11 +340,39 @@ $(document).ready(function(){
 
 });
 
+function muestra(id) {
+    console.log(id);
+    
+        form=document.getElementById("esconder"+id).style.display= "block";
+        btn=document.getElementById("mostrarForm"+id).style.display= "none";
+      
+    //const variable = form.style.display= "block";
+} 
+function esc(id) {
+    console.log(id);
+    
+        form=document.getElementById("esc"+id).style.display= "block";
+        btn=document.getElementById("mForm"+id).style.display= "none";
+      
+    //const variable = form.style.display= "block";
+}     
 
+function esc2(id) {
+    console.log(id);
+    
+        form=document.getElementById("esc2"+id).style.display= "block";
+        btn=document.getElementById("mFor"+id).style.display= "none";
+      
+    //const variable = form.style.display= "block";
+}  
+function esc3(id) {
+    console.log(id);
+    setTimeout(() => {
+        form=document.getElementById("esc2"+id).style.display= "none";
+        btn=document.getElementById("mFor"+id).style.display= "block";
+      }, "500")
+        
+      
+    //const variable = form.style.display= "block";
+}  
 
-
-
-
-
-
- 
