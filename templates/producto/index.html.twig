@@ -7,62 +7,58 @@
 {% block body %}
   <ul id="listaCarrito" class="listaCarrito"></ul>
 
-
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+<div id="banner" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="2" aria-label="Slide 3"></button>
   </div>
   <div class="carousel-inner">
-<div class="carousel-item">
-  <img src="{{ asset('images/' ~ '2.png') }}" class="d-block w-100" alt="banner">
-  <div class="carousel-caption d-none">
-    <h5 class="text-center">"かいぞく の おう に</h5>
-    <h5 class="text-center">なる わ なる"</h5>
-    <div class="d-flex justify-content-center">
-      <p class="text-wrap text-break">arittakeno yume o kakiatsume sagashi mono sagashini yuku no sa one piece rashinban nante jyutai no moto netsu ni ukasare kaji o toru no sa hokori ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>
+    <div class="carousel-item">
+
+      <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashin</p>  
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br> ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Botón 1</button>
+      </div>
     </div>
-    <p><a href="#novedades" class="btn btn-warning mt-3">Descuentos</a></p> 
+      <div class="carousel-item active">
+       <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner2.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashini</p>
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br> ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Botón 1</button>
+      </div>
+    </div>
+   <div class="carousel-item">
+
+    <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner3.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashini </p> 
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br>ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Botón 1</button>
+      </div>
+    </div>
   </div>
 </div>
 
 
-<div class="carousel-item active">
-  <img src="{{ asset('images/' ~ '1.png') }}" class="d-block w-100" alt="banner">
-  <div id="resposive" class="carousel-caption d-none ">
-    <h5 class="text-center">"かいぞく の おう に</h5>
-    <h5 class="text-center">なる わ なる"</h5>
-    <div class="d-flex justify-content-center">
-      <p class="text-wrap text-break">arittakeno yume o kakiatsume sagashi mono sagashini yuku no sa one piece rashinban nante jyutai no moto netsu ni ukasare kaji o toru no sa hokori ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>
-    </div>
-    <p><a href="#novedades" class="btn btn-warning mt-3">Descuentos</a></p> 
-  </div>
-</div>
-
-
-<div class="carousel-item">
-  <img src="{{ asset('images/' ~ '3.png') }}" class="d-block w-100" alt="banner">
-  <div class="carousel-caption d-none">
-    <h5 class="text-center">"かいぞく の おう に</h5>
-    <h5 class="text-center">なる わ なる"</h5>
-    <div class="d-flex justify-content-center">
-      <p class="text-wrap text-break">arittakeno yume o kakiatsume sagashi mono sagashini yuku no sa one piece rashinban nante jyutai no moto netsu ni ukasare kaji o toru no sa hokori ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>
-    </div>
-    <p><a href="#novedades" class="btn btn-warning mt-3">Descuentos</a></p> 
-  </div>
-</div>
-
-
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
 
 <div>    <span class="titular_lista_index">
     {# {{app.session.isStarted()}} #}

@@ -3,9 +3,12 @@
 {% block title %}Producto{% endblock %}
 
 {% block body %}
-    <h1>Producto</h1>
+    <br>
+    <!-- <img id="anuncio_l" src="../images/anuncio_l.jpg"/> -->
+    <img id="pr_1" src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" />
+    <h1 style="margin-left: 6vw">Producto</h1>
 
-    <table class="table">
+    <table class="tabla_productos">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -31,14 +34,14 @@
                 <th>Categoria</th>
                 <td class="registro">{{ producto.categoria }}</td>
             </tr>
-            <tr>
+            <!--<tr>
                 <th>Imagen</th>
                 {% if producto.imagen %}
-		        <td><img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="mini-imagen productoImagen"/></td>
+		        <td style="padding-left: 10vh"><img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="mini-imagen productoImagen"/></td>
                 {% else %}
                 <td><img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" class="mini-imagen productoImagen"/></td>
                 {% endif %}
-            </tr>
+            </tr>-->
             <tr>
                 <th>Destacado</th>
                 <td class="registro">{{ producto.destacado ? 'Yes' : 'No' }}</td>
@@ -52,13 +55,15 @@
                 <td class="registro">{{ producto.novedad ? 'Yes' : 'No' }}</td>
             </tr>
         </tbody>
-    </table>
+    </table> <br>
+    <div class="botones" style="margin-left: 6vw">
+        <a class="btn btn-danger" href="{{ path('app_producto_index') }}">Volver a la lista</a>
+        {% if is_granted('ROLE_ADMIN')%}
+            <a class="btn btn-warning" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>
+        {% endif %}
+        {% if app.user %}
+            <button class="btn btn-primary" >Añadir al carrito</button>
+        {% endif %}
+    </div>   
 
-    <a class="btn btn-primary" href="{{ path('app_producto_index') }}">Volver a la lista</a>
-    {% if is_granted('ROLE_ADMIN')%}
-        <a class="btn btn-warning" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>
-    {% endif %}
-    {% if app.user %}
-<button class="btn btn-success addToCart" >Añadir al carrito</button>
-    {% endif %}
 {% endblock %}

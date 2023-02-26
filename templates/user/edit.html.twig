@@ -3,6 +3,8 @@
 {% block title %}Actualizar usuario{% endblock %}
 
 {% block body %}
+<img id="anuncio_2" src="../../images/anuncio_l.jpg"/>
+<img id="anuncio_2_b" src="../../images/anuncio_l.jpg"/>
     <div class="container contenedor">
         <div class="row">
             <div class="col-xs-12">
@@ -11,9 +13,9 @@
                 {{ include('user/_form.html.twig', {'button_label': 'Actualizar'}) }}
                 <div class="contenedor-btn">
                     {% if is_granted('ROLE_ADMIN')%}
-                    <a class="btn btn-primary" href="{{ path('app_user_index') }}">Volver</a>
+                    <a class="btn btn-warning" style="height: 38px" href="{{ path('app_user_index') }}">Volver</a>
                     {% else %}
-                    <a class="btn btn-primary" href="{{ path('app_producto_index') }}">Volver</a>
+                    <a class="btn btn-warning" style="height: 38px" href="{{ path('app_producto_index') }}">Volver</a>
                     {% endif %}
                     {{ include('user/_delete_form.html.twig') }}
                 </div>

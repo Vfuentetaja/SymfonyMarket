@@ -30,8 +30,7 @@ class ProductoType extends AbstractType
                     'Figuras' => 'Figuras',
                     'Decoracion' => 'Decoracion'
                 )))
-            ->add('imagen1', FileType::class, ['label' => 'Foto del producto','mapped' => false, 'required' => false,
-                'constraints' => [new File([
+            ->add('imagen1', FileType::class, ['label' => 'Foto del producto','mapped' => false, 'required' => false, 'constraints' => [new File([
                       'maxSize' => '1024k',
                       'mimeTypes' => ['image/jpeg','image/png',],
                       'mimeTypesMessage' => 'Por favor sube una imágen',

@@ -3,13 +3,15 @@
 {% block title %}Actualizar producto{% endblock %}
 
 {% block body %}
-    <div class="container contenedor">
+<img id="anuncio_2" src="../../images/anuncio_l.jpg"/>
+<img id="anuncio_2_b" src="../../images/anuncio_l.jpg"/>
+    <div class="container contenedor"><br>
         <div class="row">
-            <div class="col-xs-12">
-                <h1>Actualizar producto</h1>
+            <div class="col-xs-12"><br>
+                <h1>Actualizar producto</h1> 
                 {{ include('producto/_form.html.twig', {'button_label': 'Actualizar'}) }}
                 {# {{ include('producto/_delete_form.html.twig') }} #}
-            </div>
+            </div> 
         </div>
     </div>
 {% endblock %}

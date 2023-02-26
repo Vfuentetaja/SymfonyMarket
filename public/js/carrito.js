@@ -3,7 +3,8 @@ var request = indexedDB.open("carrito", 1);
 var db;
 //ejecutar al cargar
 
-var listaCarrito = document.querySelector('.listaCarrito')
+//var listaCarrito = document.querySelector(".listaCarrito")
+var listaCarrito = document.getElementById("listaCarrito");
 
 // Crea el almacén de objetos y comprobamos que no exista 
 request.onupgradeneeded = function(event) {

@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Producto index{% endblock %}
-
 {% block body %}
+<section class="bg-light p-5">
     <h1>Lista de productos</h1>
-
-    <table class="table">
-        <thead>
+    <div class="table-responsive" id="no-more-tables">
+    <table class="table bg-white">
+        <thead class="bg-dark text-light">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
@@ -24,25 +24,25 @@
         <tbody>
         {% for producto in productos %}
             <tr>
-                <td class="registro">{{ producto.id }}</td>
-                <td class="registro">{{ producto.nombre }}</td>
-                <td class="registro">{{ producto.precio }}</td>
-                <td class="registro">{{ producto.descripcion }}</td>
-                <td class="registro">{{ producto.cantidad }}</td>
-                <td class="registro">{{ producto.categoria }}</td>
-                <td class="registro">{{ producto.destacado ? 'Yes' : 'No' }}</td>
-                <td class="registro">{{ producto.oferta ? 'Yes' : 'No' }}</td>
-                <td class="registro">{{ producto.novedad ? 'Yes' : 'No' }}</td>
+                <td data-title="Id producto" class="registro">{{ producto.id }}</td>
+                <td data-title="Nombre Producto" class="registro">{{ producto.nombre }}</td>
+                <td data-title="Precio" class="registro">{{ producto.precio }}</td>
+                <td data-title="Descripcion" class="registro">{{ producto.descripcion }}</td>
+                <td data-title="Cantidad" class="registro">{{ producto.cantidad }}</td>
+                <td data-title="Categoria" class="registro">{{ producto.categoria }}</td>
+                <td data-title="Destacado" class="registro">{{ producto.destacado ? 'Yes' : 'No' }}</td>
+                <td data-title="Oferta" class="registro">{{ producto.oferta ? 'Yes' : 'No' }}</td>
+                <td data-title="Novedad" class="registro">{{ producto.novedad ? 'Yes' : 'No' }}</td>
                 {% if producto.imagen %}
-		        <td><img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="mini-imagen"/></td>
+		        <td data-title="imagen"><img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="mini-imagen2"/></td>
                 {% else %}
-                <td><img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" class="mini-imagen"/></td>
+                <td data-title="imagen_def"><img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" class="mini-imagen2"/></td>
                 {% endif %} 
-                <td>
+                <td data-title="Botones">
                     <div class="contenedor-btn">
-                        <a class="btn btn-primary" href="{{ path('app_producto_show', {'id': producto.id}) }}">Detalles</a>
+                        <a class="btn btn-primary" style="height:39px" href="{{ path('app_producto_show', {'id': producto.id}) }}">Detalles</a>
                         {% if is_granted('ROLE_ADMIN')%}
-                            <a class="btn btn-warning" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>                 
+                            <a class="btn btn-warning" style="height:39px" href="{{ path('app_producto_edit', {'id': producto.id}) }}">Actualizar</a>                 
                             {{ include('producto/_delete_form.html.twig') }}
                         {% endif %}
                     </div>
@@ -55,6 +55,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    </div>
+</section>
     {#<a href="{{ path('app_producto_new') }}">Create new</a>#}
 {% endblock %}
