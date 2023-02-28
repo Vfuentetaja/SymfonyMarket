@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actualizar producto{% endblock %}
+
+{% block body %}
+    <div class="container contenedor">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Actualizar producto</h1>
+                {{ include('producto/_form.html.twig', {'button_label': 'Actualizar'}) }}
+                {# {{ include('producto/_delete_form.html.twig') }} #}
+            </div>
+        </div>
+    </div>
+{% endblock %}

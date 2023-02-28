@@ -1,0 +1,502 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Producto index{% endblock %}
+
+
+
+{% block body %}
+
+
+{#-------------------------------------------Despliegue Carrito---------------------------------------------------#}
+    <ul id="listaCarrito" class="listaCarrito"></ul>
+
+ 
+  {# {{app.session.isStarted()}} #}
+{#----------------------------------------------BANNER------------------------------------------------------------------------------------#}
+<div id="banner" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashin</p>  
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br> ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Novedades</button>
+      </div>
+    </div>
+      <div class="carousel-item">
+       <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner1.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashini</p>
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br> ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Descuentos</button>
+      </div>
+    </div>
+   <div class="carousel-item">
+
+    <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner2.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashini </p> 
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br>ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Figuras</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{#---------------------------------------Novedades----------------------------------------------------------------------#}
+
+
+{#----------------------------------------SECTION NOVEDADES-------------------------------------------------------------#}
+
+   {# 
+ <div class = "d-flex flex-wrap justify-content-center mt-5 filter-button-group">
+                <button type = "button" class = "btn m-2 text-dark active-filter-btn" data-filter = "*">All</button>
+                <button type = "button" class = "btn m-2 text-dark" data-filter = ".best">Best Sellers</button>
+                <button type = "button" class = "btn m-2 text-dark" data-filter = ".feat">Featured</button>
+                <button type = "button" class = "btn m-2 text-dark" data-filter = ".new">New Arrival</button>
+            </div>
+            #} 
+   <div class = "title text-center titular_lista_index">
+                <h2 class = "position-relative d-inline-block">{{ 'Novedades'|trans }}</h2>
+        </div>
+
+
+
+
+<section class="novedades1">
+    <div class="container">
+        <div id="novedadesCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% set novedades = [] %}
+                {% for producto in productos %}
+                    {% if producto.novedad %}
+                        {% set novedades = novedades|merge([producto]) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if novedades is empty %}
+                    <p>No hay registros.</p>
+                {% endif %}
+
+                {% for producto in novedades %}
+                    {% if loop.index0 % 3 == 0 %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="row">
+                    {% endif %}
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-3">
+                            <div class="collection-img position-relative">
+                                {% if producto.imagen %}
+                                    <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100" alt="Foto producto"/>
+                                {% else %}
+                                    <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}"class="w-100" alt="Foto producto"/>
+                                {% endif %} 
+                            </div>
+                            <div class="text-center">
+                                <div class="rating mt-3">
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                </div>
+                                <span class="fw-bold">{{ producto.precio }}€</span>
+                                <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                                <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if loop.index0 % 3 == 2 or loop.last %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button class="carousel-control-prev d-none d-md-block" type="button" data-bs-target="#novedadesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next d-none d-md-block" type="button" data-bs-target="#novedadesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+            <div class="d-md-none">
+                <div id="novedadesCarouselMobile" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                {% for producto in novedades %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="card mb-3">
+                                <div class="collection-img position-relative">
+                                    {% if producto.imagen %}
+                                        <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100"
+                                    {% else %}
+                                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}"class="w-100"
+                                    {% endif %} 
+                                    alt="Foto producto"/>
+                                </div>
+                                <div class="text-center">
+                                    <div class="rating mt-3">
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    </div>
+                                    <span class="fw-bold">{{ producto.precio }}€</span>
+                                    <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                                    <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+                </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#novedadesCarouselMobile" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#novedadesCarouselMobile" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{#------------------------------------------DESTACADOS--------------------------------------------------------------------------#}
+
+
+  <div class = "title text-center titular_lista_index">
+                <h2 class = "position-relative d-inline-block">{{ 'Destacados'|trans }}</h2>
+        </div>
+
+{#-------------------------------------------SECTION DESTACADOS------------------------------------------------------------------------------#}
+
+<section class="destacados1">
+    <div class="container">
+        <div id="destacadosCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% set destacados = [] %}
+                {% for producto in productos %}
+                    {% if producto.destacado %}
+                        {% set destacados = destacados|merge([producto]) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if destacados is empty %}
+                    <p>No hay registros.</p>
+                {% endif %}
+
+                {% for producto in destacados %}
+                    {% if loop.index0 % 3 == 0 %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="row">
+                    {% endif %}
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-3">
+                            <div class="collection-img position-relative">
+                                {% if producto.imagen %}
+                                    <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100" alt="Foto producto"/>
+                                {% else %}
+                                    <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}"class="w-100" alt="Foto producto"/>
+                                {% endif %} 
+                            </div>
+                            <div class="text-center">
+                                <div class="rating mt-3">
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                </div>
+                                <span class="fw-bold">{{ producto.precio }}€</span>
+                                <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                                <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if loop.index0 % 3 == 2 or loop.last %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button class="carousel-control-prev d-none d-md-block" type="button" data-bs-target="#destacadosCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next d-none d-md-block" type="button" data-bs-target="#destacadosCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+            <div class="d-md-none">
+                <div id="destacadosCarouselMobile" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                {% for producto in destacados %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="card mb-3">
+                                <div class="collection-img position-relative">
+                                    {% if producto.imagen %}
+                                        <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100"
+                                    {% else %}
+                                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}"class="w-100"
+                                    {% endif %} 
+                                    alt="Foto producto"/>
+                                </div>
+                                <div class="text-center">
+                                    <div class="rating mt-3">
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    </div>
+                                    <span class="fw-bold">{{ producto.precio }}€</span>
+                                    <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                                    <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+                </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#destacadosCarouselMobile" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#destacadosCarouselMobile" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+{#------------------------------------------DESCUENTOS--------------------------------------------------------------------------#}
+
+
+  <div class="title text-center titular_lista_index">
+                <h2 class = "position-relative d-inline-block">{{ 'Descuentos'|trans }}</h2>
+        </div>
+{#-------------------------------------------SECTION DESCUENTOS------------------------------------------------------------------------------#}
+
+
+
+
+<section class="descuentos1">
+    <div class="container">
+        <div id="descuentosCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% set ofertas = [] %}
+                {% for producto in productos %}
+                    {% if producto.oferta %}
+                        {% set ofertas = ofertas|merge([producto]) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if ofertas is empty %}
+                    <p>No hay registros.</p>
+                {% endif %}
+
+                {% for producto in ofertas %}
+                    {% if loop.index0 % 3 == 0 %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="row">
+                    {% endif %}
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-3">
+                            <div class="collection-img position-relative">
+                                {% if producto.imagen %}
+                                    <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100" alt="Foto producto"/>
+                                {% else %}
+                                    <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}"class="w-100" alt="Foto producto"/>
+                                {% endif %} 
+                            </div>
+                            <div class="text-center">
+                                <div class="rating mt-3">
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    <span class="text-primary"><i class="fas fa-star"></i></span>
+                                </div>
+                                <span class="fw-bold">{{ producto.precio }}€</span>
+                                <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                                <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if loop.index0 % 3 == 2 or loop.last %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button class="carousel-control-prev d-none d-md-block" type="button" data-bs-target="#descuentosCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next d-none d-md-block" type="button" data-bs-target="#descuentosCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+            <div class="d-md-none">
+                <div id="descuentosCarouselMobile" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                {% for producto in ofertas %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="card mb-3">
+                                <div class="collection-img position-relative">
+                                    {% if producto.imagen %}
+                                        <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100"
+                                    {% else %}
+                                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}"class="w-100"
+                                    {% endif %} 
+                                    alt="Foto producto"/>
+                                </div>
+                                <div class="text-center">
+                                    <div class="rating mt-3">
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                        <span class="text-primary"><i class="fas fa-star"></i></span>
+                                    </div>
+                                    <span class="fw-bold">{{ producto.precio }}€</span>
+                                    <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                                    <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+                </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#descuentosCarouselMobile" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#descuentosCarouselMobile" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+{#-------------------------------------------NUESTROSPRODUCTOS------------------------------------------------------------------------------#}
+
+
+  <div class = "title text-center titular_lista_index columna-productos">
+                <h2 class = "position-relative d-inline-block columna-productos">{{ 'Nuestros productos'|trans }}</h2>
+        </div>
+{#-------------------------------------------SECTION NUESTROSPRODUCTOS------------------------------------------------------------------------------#}
+
+    <section class="columna-productos">
+        {% for producto in productos %}
+            {% if loop.index <= 4 %}
+                <div class="contenido_stories">
+                    <div class="contenido_stories_foto">
+                        {% if producto.imagen %}
+                        <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
+                        {% else %}
+                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
+                        {% endif %} 
+                    </div>
+                    <div class="contenido_stories_descripcion">
+                        <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
+                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
+                        <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p></div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    <section class="columna-productos">
+        {% for producto in productos %}
+            {% if loop.index >= 5 and loop.index <= 8 %}
+                <div class="contenido_stories">
+                    <div class="contenido_stories_foto">
+                        {% if producto.imagen %}
+                        <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
+                        {% else %}
+                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
+                        {% endif %} 
+                    </div>
+                    <div class="contenido_stories_descripcion">
+                        <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
+                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
+                        <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p></div>
+                    </div>
+                        
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+    <span class="boton_lista_index">
+        <a href="{{ path('app_producto_search_all') }}" class="btn btn-warning">Ver lista completa</a>
+    </span>
+{#-------------------------------------------------------------------------------------------#}
+
+
+
+
+
+
+
+    {# <p>Roles: {{dump(app.user.roles[0])}}</p> #}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    <script type="text/javascript" src="{{ asset('js/sliders.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/carrito.js') }}"></script>
+    {% if app.user %}
+    <script>
+        if (window.sessionStorage) {
+            sessionStorage.setItem("id", {{app.user.id}});
+            sessionStorage.setItem("role", '{{app.user.roles[0]}}');
+            //sessionStorage.setItem("roles", "ROLE_ADMIN");
+        }
+    </script>
+    {% endif %}
+{% endblock %}

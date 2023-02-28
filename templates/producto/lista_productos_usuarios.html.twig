@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Productos{% endblock %}
+
+{% block body %}
+    <span class="titular_lista_index">
+        <h3>Resultados</h3>
+    </span> 
+    {% set productosPorFila = 4 %}
+    {% for producto in productos %}
+        {% if productosPorFila == 1 or loop.index % productosPorFila == 1 %}
+        <div class="contenido_filas_resultados_busqueda">
+        {% endif %}
+            <div class="contenido_stories">  
+                <div class="contenido_stories_foto">
+                    {% if producto.imagen %}
+                    <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
+                    {% else %}
+                    <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
+                    {% endif %} 
+                </div>
+                <div class="contenido_stories_descripcion">
+                    <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
+                    <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
+                    <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p></div>
+                </div> 
+            </div>
+        {% if loop.last or loop.index % productosPorFila == 0 %}
+        </div>
+        {% endif %} 
+    {% else %}
+        <p colspan="10">No hay resultados</p>
+    {% endfor %}
+
+{% endblock %}

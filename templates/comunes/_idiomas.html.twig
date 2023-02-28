@@ -1,0 +1,16 @@
+<div class="idiomas">
+	{% for lenguaje, nombre_lenguaje in listado_idiomas %}  {#listado_idiomas esta definida en twig.yaml como variable global para todos los twig#}
+		{#Creamos dos formularios, uno para cada idioma#}
+		<form action="{{path('app_idioma',{'_locale': lenguaje})}}" method="POST"> {#a traves del action modificamos el valor del atributo _locale de cada request que mandamos al controller#}
+			<input type="hidden" name="ruta" value="{{ ruta }}"/>
+			<button type="submit" class="btn dropdown-item {{ idioma_actual == lenguaje ? 'disabled' }}">
+			{% if nombre_lenguaje=='es' %}
+				<img src="{{ asset('images/' ~ 'ban_es.jpg') }}" class="mini-bandera" alt="es">
+			{% else %}
+				<img src="{{ asset('images/' ~ 'ban_en.jpg') }}" class="mini-bandera" alt="en">'
+			{% endif %}
+			</button>
+		</form>
+	{% endfor%}
+</div>
+
