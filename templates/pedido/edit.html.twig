@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Pedido{% endblock %}
+
+{% block body %}
+<img id="anuncio_3" src="../../images/anuncio_l.jpg"/>
+<img id="anuncio_3_b" src="../../images/anuncio_l.jpg"/>
+    <div class="container contenedor">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>{{ 'Modificar pedido'|trans }}</h1> 
+                {{ include('pedido/_form.html.twig', {'button_label': 'Actualizar datos de envio'}) }} <br>
+                {% if is_granted('ROLE_ADMIN')%}
+                    <a class="btn btn-primary" href="{{path('app_pedido_index_all')}}">{{ 'Volver lista pedidos'|trans }}</a>
+                {% else %}
+                    <a class="btn btn-primary" href="{{path('app_pedido_index', {'id': app.user.id}) }}">{{ 'Volver lista pedidos'|trans }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

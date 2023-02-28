@@ -1,0 +1,267 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Producto index{% endblock %}
+
+
+
+{% block body %}
+  <ul id="listaCarrito" class="listaCarrito"></ul>
+
+<div id="banner" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#banner" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item">
+
+      <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashin</p>  
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br> ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Botón 1</button>
+      </div>
+    </div>
+      <div class="carousel-item active">
+       <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner2.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashini</p>
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br> ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Botón 1</button>
+      </div>
+    </div>
+   <div class="carousel-item">
+
+    <video class="d-block w-100" autoplay loop muted>
+        <source src="{{ asset('images/' ~ 'banner3.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-caption d-none d-md-block">
+        <h2>"かいぞく の おう に</h2>
+        <h2>なる わ なる"</h2>
+        <p>arittakeno yume o kakiatsume sagashi mono sagashini </p> 
+        {#<p>no moto netsu ni ukasare kaji o toru no sa hokori <br>ka butteta takara no chizu mo tashikameta no nara densetsu jyanai!</p>#}
+        <button href="#novedades" class="btn btn-primary">Botón 1</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div>    <span class="titular_lista_index">
+    {# {{app.session.isStarted()}} #}
+        <h3>{{ 'Novedades'|trans }}</h3>
+
+    </span> </div>
+ 
+    <section class="novedades" id="novedades">
+      <div class="slideshow-container">
+        {% set productosPorSlider = 3 %}
+        {% set novedades = [] %}
+        {% for producto in productos %}
+            {% if producto.novedad %}
+                {% set novedades = novedades|merge([producto]) %}
+            {% endif %}
+        {% endfor %}
+        {% for producto in novedades %}           
+            {% if productosPorSlider == 1 or loop.index % productosPorSlider == 1 %}
+            <div class="mySlides1">
+            <div class="contenido1">
+            {% endif %}
+            
+            <div class="contenido_stories">
+            <div class="col-12 col-md-6">
+                        <div class="item shadow mb-4">
+                            <h4 class="item-title">{{ producto.nombre }}</h4>
+                              {% if producto.imagen %}
+                                <img src="{{ asset('images/' ~ producto.imagen) }}" class="card-img-top" alt="Foto producto"/>
+                            {% else %}
+                                <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" class="card-img-top" alt="Foto producto"/>
+                             {% endif %} 
+                    
+                            <div class="item-details">
+                                <p class="">{{ producto.descripcion }}</p>
+                                <h4 class="item-price">{{ producto.precio }}</h4>
+                                <a class="btn btn-success" href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+            {% if loop.last or loop.index % productosPorSlider == 0 %}
+            </div>
+            </div>
+            {% endif %}           
+        {% else %}
+            <p colspan="10">no hay registros</p>
+        {% endfor %}
+        <a class="prev" onclick="plusSlides(-1, 0)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1, 0)">&#10095;</a>
+      </div>
+    </section>
+
+    <span class="titular_lista_index">
+        <h3>{{ 'Destacados'|trans }}</h3>
+    </span>
+    <section class="destacados">
+      <div class="slideshow-container">
+
+        {% set destacados = [] %}
+        {% for producto in productos %}
+            {% if producto.destacado %}
+                {% set destacados = destacados|merge([producto]) %}
+            {% endif %}
+        {% endfor %}
+
+        {% for producto in destacados %}
+            {% if productosPorSlider == 1 or loop.index % productosPorSlider == 1 %}
+            <div class="mySlides2">
+               <div class="contenido1">
+            {% endif %}
+                
+                <div class="contenido_stories">
+                    <div class="contenido_stories_foto">
+                        {% if producto.imagen %}
+                        <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
+                        {% else %}
+                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
+                        {% endif %} 
+                    </div>
+                    <div class="contenido_stories_descripcion">
+                        <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
+                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
+                        <div class="descripcion_enlace"><p>{{ producto.precio }}</p></div>
+                        <a class="btn btn-success" href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a>
+                    </div>
+                </div>
+            {% if loop.last or loop.index % productosPorSlider == 0 %}
+               </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <p colspan="10">no hay registros</p>
+        {% endfor %}
+        <a class="prev" onclick="plusSlides(-1, 1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1, 1)">&#10095;</a>
+      </div>
+    </section>
+
+
+    <span class="titular_lista_index">
+        <h3>{{ 'Descuentos'|trans }}</h3>
+    </span>
+    <section class="descuentos">
+      <div class="slideshow-container">
+       
+        {% set ofertas = [] %}
+        {% for producto in productos %}
+            {% if producto.oferta %}
+                {% set ofertas = ofertas|merge([producto]) %}
+            {% endif %}
+        {% endfor %}
+
+        {% for producto in ofertas %}
+            {% if productosPorSlider == 1 or loop.index % productosPorSlider == 1 %}
+            <div class="mySlides3">
+               <div class="contenido1">
+            {% endif %}
+                
+                <div class="contenido_stories">
+                    <div class="contenido_stories_foto">
+                        {% if producto.imagen %}
+                        <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
+                        {% else %}
+                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
+                        {% endif %} 
+                    </div>
+                    <div class="contenido_stories_descripcion">
+                        <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
+                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p><img class="mini-imagen" src="{{ asset('images/descuento.png') }}" alt="logo descuento"/></div>
+                        <div class="descripcion_enlace"><p>{{ producto.precio }}</p><p>Rebajado un {{ producto.descuento }}%</p></div>
+                        <a class="btn btn-success" href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a>
+                    </div>
+                </div>
+            {% if loop.last or loop.index % productosPorSlider == 0 %}
+               </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <p colspan="10">no hay registros</p>
+        {% endfor %}
+        <a class="prev" onclick="plusSlides(-1, 2)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1, 2)">&#10095;</a>
+      </div>
+    </section>
+
+    <span class="titular_lista_index">
+        <h3>{{ 'Nuestros productos'|trans }}</h3>
+    </span>
+    <section class="columna-productos">
+        
+
+        {% for producto in productos %}
+            {% if loop.index <= 4 %}
+                <div class="contenido_stories">
+                    <div class="contenido_stories_foto">
+                        {% if producto.imagen %}
+                        <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
+                        {% else %}
+                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
+                        {% endif %} 
+                    </div>
+                    <div class="contenido_stories_descripcion">
+                        <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
+                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
+                        <div class="descripcion_enlace"><p>{{ producto.precio }}</p></div>
+                        <a class="btn btn-success" href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    <section class="columna-productos">
+        {% for producto in productos %}
+            {% if loop.index >= 5 and loop.index <= 8 %}
+                <div class="contenido_stories">
+                    <div class="contenido_stories_foto">
+                        {% if producto.imagen %}
+                        <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
+                        {% else %}
+                        <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
+                        {% endif %} 
+                    </div>
+                    <div class="contenido_stories_descripcion">
+                        <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
+                        <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
+                        <div class="descripcion_enlace"><p>{{ producto.precio }}</p></div>
+                        <a class="btn btn-success" href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a>
+                    </div>
+                        
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+    <span class="boton_lista_index">
+        <a href="{{ path('app_producto_search_all') }}" class="btn btn-warning">Ver lista completa</a>
+    </span>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    <script type="text/javascript" src="{{ asset('js/sliders.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/carrito.js') }}"></script>
+
+{% endblock %}
