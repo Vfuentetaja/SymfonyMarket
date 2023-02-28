@@ -19,6 +19,11 @@
 }
 
 /* ---------------------PRODUCTOS---------------------------------- */
+
+#rrs{
+  width:50px;
+  height:50px;
+}
 .tabla_productos{
   margin-left: 6vw;
 
@@ -189,6 +194,10 @@ img {
   background-image: url("../images/fondo.png");
   /* background-color: #B0E0E6; */
 }
+#producto_imagen1{
+  font-size: revert;
+}
+
 
 .columna-productos {
   margin-left: 1%;
@@ -423,7 +432,7 @@ tr > th {
 .contenedor-btn > * {
   font-family: cursive;
   max-height: 6.5vh;
-  margin: 10px;
+  //margin: 10px;
   font-weight: bolder;
   display: inline-block;
   font-size: 12px;
@@ -439,6 +448,10 @@ tr > th {
   list-style: none;
 }
 
+#r_lista{
+  padding: 1rem !important;
+}
+
 /*CODIGO DE LAS TABLAS CON LA DESCRIPCION Y LSITADO DE REGISTROS*/
 
 /* --------------------Carrito -------------------------- */
@@ -450,7 +463,7 @@ tr > th {
   left: 73.7vw;
   top: 39vh;
   width: 25vw;
-  background-color: black;
+  background-color: antiquewhite;
   border-radius: 5%;
   padding-left: 0px;
   /* border: solid black; */
@@ -487,7 +500,6 @@ tr > th {
   margin: 0.5vw;
   margin-left: 1vw;
   border-radius: 15%;
-  background-color: cyan;
   /* border: solid black ; */
 }
 .listaCarrito > .total {
@@ -591,14 +603,14 @@ input {
 }
 #anuncio_2{
   position: absolute;
-  margin-left: 85vw;
+  margin-left: 75vw;
   width: 300px;
   height: 600px;
   margin-top:5vh;
 }
 #anuncio_2_b{
   position: absolute;
-  margin-left: 5vw;
+  margin-left: 2vw;
   width: 300px;
   height: 600px;
   margin-top:5vh;
