@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Producto{% endblock %}
+
+{% block body %}
+
+<div class="container mt-3">
+        <div class="row">
+            <div class="col-md-4">
+                  {% if producto.imagen %}
+		        <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="img-fluid productoImagen"/>
+                {% else %}
+                <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" class="img-fluid productoImagen"/>
+                {% endif %}
+
+            </div>
+            <div class="col-md-3">
+                <h1 class="productoNombre registro" id="productoNombre">{{ producto.nombre }}</h1>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted">ID:</p>
+                        <p class="registro" id="productoId">{{ producto.id }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted">Cantidad disponible:</p>
+                        <p id="productoCantidad" class="productoCantidad registro"> {{ producto.cantidad }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted">Cantegoria: </p>
+                        <p class="registro">{{ producto.categoria }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted">Vendido por: </p>
+                        <p class="text-muted">Mugiwara Store </p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p id="productoPrecio"class="productoPrecio registro">{{ producto.precio }}</p>
+                        <p class="text-muted">IVA incluido</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center nav-btns button">
+                        {% if app.user %}
+                            <button type="submit" class="btn btn-success addToCart">
+                                <i class="bi bi-cart-plus"></i> Añadir al carrito
+                            </button>
+                        {% endif %}
+                    </div>
+                    <p><i class="bi bi-check-lg text-success me-2"> </i>Disponible para envío</p>
+                </hr>
+            </div>
+            <div class="col-md-5">
+                <hr>
+                    <h2>Descripción del producto</h2>
+                    <p>{{ producto.descripcion }}</p>
+                <hr>    
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Destacado</th>
+                                <td class="registro">{{ producto.destacado ? 'Yes' : 'No' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Oferta</th>
+                                <td class="registro">{{ producto.oferta ? 'Yes' : 'No' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Novedad</th>
+                                <td class="registro">{{ producto.novedad ? 'Yes' : 'No' }}</td>
+                        </tr>
+                    </tbody>
+                </table>    
+                        
+                <hr>
+            </div>
+        </div>      
+ </div>
+
+    <div class="nav-btns button">
+        <a href="{{ path('app_producto_index') }}"><button class="btn btn-primary">Volver</button></a>
+        {% if is_granted('ROLE_ADMIN')%}
+            <a  href="{{ path('app_producto_edit', {'id': producto.id}) }}"><button class="btn btn-warning">Actualizar</button></a>
+        {% endif %}
+    </div>
+{% if app.user %}
+  <h4 class="mt-4">Preguntas</h4>
+  <form method="post" id="formularioPregunta" action={{ path('app_pregunta_new', {'id': producto.id}) }}>
+    <div class="mb-3">
+      <label for="inputTexto" class="form-label">Escriba su pregunta</label>
+      <textarea id="inputTexto" name="texto" rows="5" cols="33" required autofocus class="form-control"></textarea>
+    </div>
+    <div class="d-grid gap-2">
+      <input type="submit" value="Enviar" id="enviarPregunta" class="btn btn-primary">
+    </div>
+  </form>
+{% endif %}
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 col-lg-12">
+            <div class="well col-sm-12 d-inline-flex">         
+                <div id="listadoPreguntas" style='width: 100%;'></div>        
+            </div>                    
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ asset('js/preguntas.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/carrito.js') }}"></script
+
+{% endblock %}

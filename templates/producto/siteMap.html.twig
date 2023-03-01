@@ -1,0 +1,70 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Site Map {% endblock %}
+
+{% block body %}
+     <div class="container mt-4">
+    <h1 class="text-center mb-4">Sitemap - Mi sitio web</h1>
+
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <h4>Homepage</h4>
+        <ul>
+          <li><a href="/">Homepage</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h4>Sobre nosotros</h4>
+        <ul>
+          <li><a href="/sobre-nosotros">Quiénes somos</a></li>
+          <li><a href="/nuestro-equipo">Nuestro equipo</a></li>
+          <li><a href="/mision-y-vision">Misión y visión</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h4>Redes sociales</h4>
+        <ul>
+          <li><a href="/redes-sociales">Redes sociales</a></li>
+          <li><a href="/twitter">Twitter</a></li>
+          <li><a href="/facebook">Facebook</a></li>
+          <li><a href="/facebook">Facebook</a></li>
+
+        </ul>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="/ayuda">Ayuda</a></li>
+          <li><a href="/preguntas-frecuentes">Preguntas frecuentes</a></li>
+          <li><a href="/contacto">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <h4>Productos</h4>
+        <ul>
+          <li><a href="/productos">Todos los productos</a></li>
+          <li><a href="/productos/nuevo">Nuevo producto</a></li>
+          <li><a href="/productos/categorias">Categorías</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h4>Sección de usuario</h4>
+        <ul>
+          <li><a href="/usuario">Mi cuenta</a></li>
+          <li><a href="/usuario/perfil">Mi perfil</a></li>
+          <li><a href="/usuario/configuracion">Configuración</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}
