@@ -104,7 +104,7 @@ $(document).ready(function(){
                 codigo+="</div>";
 
             }if(preguntas.length<1){
-                codigo+="<div>Este usuario no ha realizado ninguna pregunta</div>";
+                codigo+="<div>No se ha realizado ninguna pregunta</div>";
             }
             $('#listadoPreguntas').html(codigo); 
         });
@@ -397,7 +397,7 @@ $(document).ready(function(){
                 codigo+="</div>";
 
             }if(preguntas.length<1){
-                codigo+="<div>Este usuario no ha realizado ninguna pregunta</div>";
+                codigo+="<div>No se ha realizado ninguna pregunta</div>";
             }
             $('#listadoPreguntas').html(codigo);  
         });

@@ -18,7 +18,7 @@
                 <th>Novedad</th>
                 <th>Oferta</th>
                 <th>Imagen</th>
-                <th>actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
                 {% if producto.imagen %}
 		        <td data-title="imagen"><img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto" class="mini-imagen"/></td>
                 {% else %}
-                <td data-title="imagen_def"><img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto" class="mini-imagen"/></td>
+                <td data-title="imagen_def"><img src="{{ asset('images/' ~ 'ImagenPorDefecto.png') }}" alt="Foto producto" class="mini-imagen"/></td>
                 {% endif %} 
                 <td data-title="Botones">
                     <div class="contenedor-btn nav-btns button">

@@ -131,10 +131,24 @@ img {vertical-align: middle;}
 
 /*CODIGO DE LOS BLOQUES DEL INDEX*/
 
+.novedades1,.destacados1,.descuentos1 {
+  background-color: #f2f2f2;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(50%) sepia(100%) saturate(700%) hue-rotate(180deg);
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  color: #1D4F91;
+}
+
 .titular_lista_index {
     color:  black;
-    margin-top: 6vh;
-    margin-bottom: 6vH;
+    margin-top: 5vh;
+    margin-bottom: 5vH;
 }
 .descuentos,.destacados,.novedades{
     width: 100%;
@@ -580,6 +594,7 @@ margin-top:5vh;
     width:40px;
     height:40px;
   }
+
 /*------------RESPONSIVE-------------------*/
 /*-----anuncios------*/
 @media (max-width: 360px){
@@ -761,16 +776,19 @@ margin-top:5vh;
       margin: 0 auto;
     }
     .
-
+  
     .titular_lista_index {
         color:  #0d6a23;
         margin-top: 2vh;
-        margin-bottom: 2vH;}
-
-    .producto-oculto {
+        margin-bottom: 2vh;
+      }
+  
+  
+          .productos-section {
             display: none;
           }
-          .columna-productos {
+          .columna-productos{
             display: none;
+  
           }
   }

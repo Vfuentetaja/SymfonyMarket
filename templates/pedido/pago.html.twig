@@ -10,16 +10,16 @@
      
       <div class="row ">
               <div class="col-md-12">
-                  <input type="text" class="form-control" placeholder="Enter Card Number" />
+                  <input type="text" class="form-control" placeholder="Introduzca numero de tarjeta" />
               </div>
           </div>
      <div class="row ">
               <div class="col-md-3 col-sm-3 col-xs-3">
-                  <span class="help-block text-muted small-font" > Expiry Month</span>
+                  <span class="help-block text-muted small-font" > Mes de expiracion</span>
                   <input type="text" class="form-control" placeholder="MM" />
               </div>
          <div class="col-md-3 col-sm-3 col-xs-3">
-                  <span class="help-block text-muted small-font" >  Expiry Year</span>
+                  <span class="help-block text-muted small-font" >  Año de expiracion</span>
                   <input type="text" class="form-control" placeholder="YY" />
               </div>
         <div class="col-md-3 col-sm-3 col-xs-3">
@@ -27,31 +27,31 @@
                   <input type="text" class="form-control" placeholder="CCV" />
               </div>
          <div class="col-md-3 col-sm-3 col-xs-3">
-                <img src="" class="img-rounded" alt="imagen tarjeta de credito" />
+                <img src="{{ asset('images/' ~ 'tarjeta.png') }}" class="img-rounded mini-imagen" alt="imagen tarjeta de credito" />
          </div>
           </div>
      <div class="row ">
               <div class="col-md-12 pad-adjust">
 
-                  <input type="text" class="form-control" placeholder="Name On The Card" />
+                  <input type="text" class="form-control" placeholder="Titular de tarjeta" />
               </div>
           </div>
      <div class="row">
 <div class="col-md-12 pad-adjust">
     <div class="checkbox">
     <label>
-      <input type="checkbox" checked class="text-muted"> Save details for fast payments <a href="#"> learn how ?</a>
+      <input type="checkbox" checked class="text-muted"> Salvar detalles para pago rapido <a href="#"> ¿Sabe como?</a>
     </label>
   </div>
 </div>
      </div>
        <div class="row nav-btns button">
             <div class="col-md-6 col-sm-6 col-xs-6 pad-adjust">
-                 <a href="{{ path('app_pedido_index', {'id': app.user.id}) }}"><button class="btn btn-warning">Cancelar</button></a>
+                 <a class="btn btn-warning" href="{{ path('app_pedido_index', {'id': app.user.id}) }}">Cancelar</a>
               </div>
               <div class="col-md-6 col-sm-6 col-xs-6 pad-adjust">
                   {# <input type="submit"  class="btn btn-warning btn-block" value="PAY NOW" /> #}
-                  <button class="btn btn-danger">PAY NOW</button>
+                  <button class="btn btn-danger">PAGAR AHORA</button>
               </div>
           </div>
      

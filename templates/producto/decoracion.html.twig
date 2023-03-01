@@ -4,55 +4,79 @@
 
 {% block body %}
     <ul id="listaCarrito" class="listaCarrito"></ul>
-    <span class="titular_lista_index">
-        <h3>{{ 'Decoracion'|trans }}</h3>
-    </span> 
-    <div class="contenido_filas">
-    {% for producto in productos %}
-        {% if loop.index <= 3 %}  
-            <div class="contenido_stories">  
-                <div class="contenido_stories_foto">
-                    {% if producto.imagen %}
-                    <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
-                    {% else %}
-                    <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
-                    {% endif %} 
-                </div>
-                <div class="contenido_stories_descripcion">
-                    <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
-                    <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
-                    <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p></div>
-                </div> 
-            </div>
-        {% endif %}
-    {% else %}
-        <p colspan="10">no hay productos</p>
-    {% endfor %}
+  
+    <div class = "title text-center titular_lista_index">
+        <h2 class = "position-relative d-inline-block columna-productos">{{ 'Decoracion'|trans }}</h2>
     </div>
-        <div class="contenido_filas">
-    {% for producto in productos %}
-        {% if loop.index >= 4 and loop.index <= 6  %}
-            <div class="contenido_stories">      
-                <div class="contenido_stories_foto">
-                    {% if producto.imagen %}
-                    <img src="{{ asset('images/' ~ producto.imagen) }}" alt="Foto producto"/>
-                    {% else %}
-                    <img src="{{ asset('images/' ~ 'ImagenPorDefecto.jpg') }}" alt="Foto producto"/>
-                    {% endif %} 
+
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center">
+        {% for producto in productos %}
+            {% if loop.index <= 3 %}  
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="collection-img position-relative">
+                            {% if producto.imagen %}
+                                <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100" alt="Foto producto"/>
+                            {% else %}
+                                <img src="{{ asset('images/' ~ 'ImagenPorDefecto.png') }}" class="w-100" alt="Foto producto"/>
+                            {% endif %} 
+                        </div>
+                        <div class="text-center">
+                            <div class="rating mt-3">
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                            </div>
+                            <span class="fw-bold">{{ producto.precio }}€</span>
+                            <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                            <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="contenido_stories_descripcion">
-                    <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
-                    <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
-                    <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p></div>
-                </div>
-            </div> 
-        {% endif %}
-    {% endfor %}
+            {% endif %}
+                {% else %}
+                    <p colspan="10">no hay registros</p>
+        {% endfor %}
     </div>
-    {% include 'comunes/_paginacion.html.twig' with{
+
+    <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center">
+        {% for producto in productos %}
+            {% if loop.index >= 4 and loop.index <= 6 %}
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="collection-img position-relative">
+                            {% if producto.imagen %}
+                                <img src="{{ asset('images/' ~ producto.imagen) }}" class="w-100" alt="Foto producto"/>
+                            {% else %}
+                                <img src="{{ asset('images/' ~ 'ImagenPorDefecto.png') }}" class="w-100" alt="Foto producto"/>
+                            {% endif %} 
+                        </div>
+                        <div class="text-center">
+                            <div class="rating mt-3">
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                                <span class="text-primary"><i class="fas fa-star"></i></span>
+                            </div>
+                            <span class="fw-bold">{{ producto.precio }}€</span>
+                            <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                            <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+ 
+
+<br>{% include 'comunes/_paginacion.html.twig' with{
 	    elementos_por_pagina: constant('App\\Controller\\ProductoController::ELEMENTOS_POR_PAGINA'),
 	    numero_total_elementos: productos.count,
 	    pagina_actual: pagina_actual1
 	} %}
-
+   
 {% endblock %}
