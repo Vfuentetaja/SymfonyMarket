@@ -31,11 +31,11 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
 
-      <div class="modal-header border-bottom-0">
+{#       <div class="modal-header border-bottom-0">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=cerrarVentana()>
           <span aria-hidden="true">Cerrar</span>
         </button>
-      </div>
+      </div> #}
 
       <div class="modal-body">
 
@@ -50,7 +50,7 @@
                     {{ form_widget(registrationForm) }}
                     <button type="submit" class="btn btn-primary">Registrarse</button>
                   {{ form_end(registrationForm) }}
-                  <a class="btn btn-primary" href="#" onclick="consultarCondiciones()">Lee nuestras condiciones</a>
+                  <button class="btn btn-primary" onclick="consultarCondiciones()">Lee nuestras condiciones</button>
                 </div>
             </div>
         </div>

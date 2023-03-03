@@ -1,65 +1,62 @@
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-  <div class="container-fluid d-inline-flex" id="navbarSupportedContent">
+  <div class="container-fluid">
     <a class="navbar-brand"   href="{{path('app_producto_index')}}" >Mugiwara Store</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav d-flex justify-content-between">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
 
       <a class="nav-link active" aria-current="page" href="{{path('app_producto_index')}}">
-        {{ 'Pagina principal'|trans }}
-      </a>
+          {{ 'Pagina principal'|trans }}
+        </a>
+       
 
-      <a class="nav-link text-white" href="{{path('app_producto_regalos')}}">
+         <a class="nav-link text-white" href="{{path('app_producto_regalos')}}">
         {{ 'Regalos'|trans }}
-      </a>
-
-      <a class="nav-link text-white" href="{{path('app_producto_ropa')}}">
-        {{ 'Ropa'|trans }}
-      </a>
-
-      <a class="nav-link text-white" href="{{path('app_producto_decoracion')}}">
-        {{ 'Decoracion'|trans }}
-      </a>
-
+        </a>
+           <a class="nav-link text-white" href="{{path('app_producto_ropa')}}">
+          {{ 'Ropa'|trans }}
+        </a>
+         <a class="nav-link text-white" href="{{path('app_producto_decoracion')}}">
+          {{ 'Decoracion'|trans }}
+        </a>
       <a class="nav-link text-white" href="{{path('app_producto_figuras')}}">
-        {{ 'Figuras'|trans }}
-      </a>
-
-      {% if is_granted('ROLE_ADMIN')%}
-        <a class="nav-link text-white" href="{{path('app_producto_new')}}">
+          {{ 'Figuras'|trans }}
+        </a>
+         {% if is_granted('ROLE_ADMIN')%}
+          <a class="nav-link text-white" href="{{path('app_producto_new')}}">
           {{ 'Crear producto'|trans }}
         </a>
-      {% endif %}
-
-      {% if is_granted('ROLE_ADMIN')%}
+        {% endif %}
+         {% if is_granted('ROLE_ADMIN')%}
         <a class="nav-link text-white" href="{{path('app_producto_search_all')}}">
           {{ 'Listar producto'|trans }}
         </a>
-      {% endif %}
+        {% endif %}
 
-      {% if is_granted('ROLE_ADMIN')%}
-        <a class="nav-link text-white" href="{{path('app_user_index')}}">
-          {{ 'Listar usuarios'|trans }}
-        </a>
-      {% endif %}
-
-      {% if app.user %}
         {% if is_granted('ROLE_ADMIN')%}
+          <a class="nav-link text-white" href="{{path('app_user_index')}}">
+            {{ 'Listar usuarios'|trans }}
+          </a>
+        {% endif %}
+        
+        {% if app.user %}
+        {% if is_granted('ROLE_ADMIN')%}
+       
           <a class="nav-link text-white" href="{{path('app_pedido_index_all')}}">
             {{ 'Listar pedidos'|trans }}
           </a>
+    
         {% else %}
+       
           <a class="nav-link text-white" href="{{path('app_pedido_index', {'id': app.user.id}) }}">
             {{ 'Listar pedidos'|trans }}
           </a>
+        
         {% endif %}
       {% endif %}
       </div>
     </div>
-    </ul>
   </div>
 </nav>

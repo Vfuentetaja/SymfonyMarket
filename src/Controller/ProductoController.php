@@ -61,12 +61,17 @@ class ProductoController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'app_producto_edit', methods: ['GET', 'POST'],requirements:['id'=>'\d+'])]
-    public function edit(Request $request, Producto $producto, ProductoRepository $productoRepository): Response
+    public function edit(Request $request, Producto $producto, ProductoRepository $productoRepository,FileUploader $fileUploader): Response
     {
         $form = $this->createForm(ProductoType::class, $producto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $imagen = $form->get('imagen1')->getData();
+	        if ($imagen) {
+		        $imagenFileName = $fileUploader->upload($imagen); 
+		        $producto->setImagen($imagenFileName); 
+	        }
             $productoRepository->save($producto, true);
 
             return $this->redirectToRoute('app_producto_index', [], Response::HTTP_SEE_OTHER);
@@ -114,10 +119,20 @@ class ProductoController extends AbstractController
 	{
         $textoBuscado=$request->request->get('textoBuscado',null);
         $productosRecuperados=$productoRepository->searchText($textoBuscado);
+        if($this->getUser()==null){
+            return $this->render('producto/lista_productos_usuarios.html.twig', [
+                'productos' => $productosRecuperados,
+            ]);
+        }else if (in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
+            return $this->render('producto/lista_productos.html.twig', [
+                'productos' => $productosRecuperados,
+            ]);
+        }else{
+            return $this->render('producto/lista_productos_usuarios.html.twig', [
+                'productos' => $productosRecuperados,
+            ]);
+        }
 
-        return $this->render('producto/lista_productos.html.twig', [
-            'productos' => $productosRecuperados,
-        ]);
     }
 
     const ELEMENTOS_POR_PAGINA=6;

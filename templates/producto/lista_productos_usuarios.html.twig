@@ -19,11 +19,11 @@
                     <img src="{{ asset('images/' ~ 'ImagenPorDefecto.png') }}" alt="Foto producto"/>
                     {% endif %} 
                 </div>
-                <div class="contenido_stories_descripcion">
-                    <div class="descripcion_cabecera"><p>{{ producto.nombre }}</p></div>
-                    <div class="descripcion_titulo"><p>{{ producto.descripcion }}</p></div>
-                    <div class="descripcion_enlace"><p>{{ producto.precio }}<a href="{{ path('app_producto_show', {'id': producto.id}) }}">Ver</a></p></div>
-                </div> 
+                <div class="text-center">
+                    <span class="fw-bold">{{ producto.precio }}€</span>
+                    <p class="text-capitalize my-1">{{ producto.nombre }}</p>
+                    <a href="{{ path('app_producto_show', {'id': producto.id}) }}" class="btn btn-primary">Ver Producto</a>
+               </div> 
             </div>
         {% if loop.last or loop.index % productosPorFila == 0 %}
         </div>
